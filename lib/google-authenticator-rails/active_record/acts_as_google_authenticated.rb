@@ -1,10 +1,19 @@
-module ActiveRecord
-  module ActsAsGoogleAuthenticated
+module ActiveRecord # :nodoc:
+  module ActsAsGoogleAuthenticated # :nodoc:
     def self.included(base)
       base.extend ClassMethods
     end
 
-    module ClassMethods
+    module ClassMethods # :nodoc
+
+      # Initializes the class attributes with the specified options and includes the 
+      # GoogleAuthentication module
+      # 
+      # Options:
+      #   [:column_name] the name of the column used to create the google_label
+      #   [:method] name of the method to call to created the google_label
+      #             it supercedes :column_name
+      # 
       def acts_as_google_authenticated(options = {})
         attr_accessible :google_secret
         @google_label_column = options[:column_name]  || :email

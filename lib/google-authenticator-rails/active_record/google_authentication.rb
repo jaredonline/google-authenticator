@@ -1,5 +1,5 @@
-module ActiveRecord
-  module GoogleAuthentication
+module ActiveRecord # :nodoc:
+  module GoogleAuthentication # :nodoc:
     def set_google_secret!
       update_attributes(google_secret: Google::Authenticator::Rails::generate_secret)
     end
