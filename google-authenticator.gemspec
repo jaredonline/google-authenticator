@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jared.online@gmail.com"]
   gem.description   = %q{Add the ability to use the Google Authenticator with ActiveRecord.}
   gem.summary       = %q{Add the ability to use the Google Authenticator with ActiveRecord.}
-  gem.homepage      = "http://github.com/jaredonline/google-authenticator-rails"
+  gem.homepage      = "http://github.com/jaredonline/google-authenticator"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
