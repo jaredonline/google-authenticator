@@ -7,6 +7,9 @@ class ActiveRecord::Base # :nodoc:
   # to include the ActsAsGoogleAuthenticated module, which allows a user 
   # to call User.acts_as_google_authenticated.
   # 
+  # The model being used must have a string column named "google_secret", or an explicitly
+  # named column.
+  # 
   # Example:
   # 
   #   class User

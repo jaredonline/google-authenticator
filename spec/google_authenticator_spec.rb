@@ -6,6 +6,12 @@ class User < ActiveRecord::Base
   acts_as_google_authenticated
 end
 
+class CustomUser < ActiveRecord::Base
+  attr_accessible :email, :user_name
+
+  acts_as_google_authenticated :google_secret_column => :mfa_secret
+end
+
 describe Google::Authenticator::Rails do
   before do
     ROTP::Base32.stub!(:random_base32).and_return("5qlcip7azyjuwm36")
@@ -62,6 +68,17 @@ describe Google::Authenticator::Rails do
       @user.google_secret.should == "5qlcip7azyjuwm36"
     end
     
+    context 'secret column' do
+      before do
+        @user = CustomUser.create(email: "test@test.com", user_name: "test_user")
+        @user.mfa_secret = "test"
+      end
+
+      it 'validates code' do
+        @user.google_authenticate(472374).should be_true
+      end
+    end
+
     context 'qr codes' do
       
       it 'generates a url for a qr code' do

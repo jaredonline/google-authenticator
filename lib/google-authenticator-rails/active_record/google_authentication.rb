@@ -5,7 +5,7 @@ module ActiveRecord # :nodoc:
     end
 
     def google_authenticate(code)
-      Google::Authenticator::Rails.valid?(code, self.google_secret)
+      Google::Authenticator::Rails.valid?(code, self.__send__(self.class.google_secret_column))
     end
 
     def google_qr_uri

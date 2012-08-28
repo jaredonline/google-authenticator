@@ -1,6 +1,8 @@
+# Sets up some basic accessors for use with the ROTP module
+# 
 module Google
-  module Authenticator
-    module Rails   
+  module Authenticator # :nodoc:
+    module Rails # :nodoc:
       # Drift is set to 6 because ROTP drift is not inclusive.  This allows a drift of 5 seconds.
       DRIFT = 6
        

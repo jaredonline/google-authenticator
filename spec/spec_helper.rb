@@ -17,4 +17,11 @@ ActiveRecord::Schema.define do
     t.string :user_name
     t.timestamps
   end
+
+  create_table :custom_users, :force => true do |t|
+    t.string :mfa_secret
+    t.string :email
+    t.string :user_name
+    t.timestamps
+  end
 end
