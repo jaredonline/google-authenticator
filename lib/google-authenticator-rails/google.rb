@@ -1,0 +1,1 @@
+require 'google-authenticator-rails/google/rails'
