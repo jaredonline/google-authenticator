@@ -3,7 +3,7 @@ require 'spec_helper'
 class User < ActiveRecord::Base
   attr_accessible :email, :user_name
   
-  uses_google_authenticator
+  acts_as_google_authenticated
 end
 
 describe Google::Authenticator::Rails do
@@ -70,25 +70,25 @@ describe Google::Authenticator::Rails do
       end
       
       it 'can generate off any column' do
-        @user.class.uses_google_authenticator :column_name => :user_name
+        @user.class.acts_as_google_authenticated :column_name => :user_name
         @user.set_google_secret!
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate with a custom proc' do
-        @user.class.uses_google_authenticator :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
+        @user.class.acts_as_google_authenticated :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
         @user.set_google_secret!
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%40futureadvisor-admin%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate with a method symbol' do
-        @user.class.uses_google_authenticator :method => :email
+        @user.class.acts_as_google_authenticated :method => :email
         @user.set_google_secret!
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40test.com%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate with a method string' do
-        @user.class.uses_google_authenticator :method => "email"
+        @user.class.acts_as_google_authenticated :method => "email"
         @user.set_google_secret!
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40test.com%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
