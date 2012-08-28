@@ -70,12 +70,17 @@ describe Google::Authenticator::Rails do
     
     context 'secret column' do
       before do
+        Google::Authenticator::Rails.stub!(:generate_secret).and_return("test")
         @user = CustomUser.create(email: "test@test.com", user_name: "test_user")
-        @user.mfa_secret = "test"
+        @user.set_google_secret!
       end
 
       it 'validates code' do
         @user.google_authenticate(472374).should be_true
+      end
+
+      it 'generates a url for a qr code' do
+        @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40test.com%3Fsecret%3Dtest&chs=200x200"
       end
     end
 
