@@ -4,8 +4,8 @@ require File.expand_path('../lib/google-authenticator-rails/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jared McFarland"]
   gem.email         = ["jared.online@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Add the ability to use the Google Authenticator with ActiveRecord.}
+  gem.summary       = %q{Add the ability to use the Google Authenticator with ActiveRecord.}
   gem.homepage      = "http://github.com/jaredonline/google-authenticator-rails"
 
   gem.files         = `git ls-files`.split($\)
