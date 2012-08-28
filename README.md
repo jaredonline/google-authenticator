@@ -25,7 +25,7 @@ class User
 acts_as_google_authenticated
 end
 
-@user = user.new
+@user = User.new
 @user.set_google_secret!          # => true
 @user.google_qr_uri               # => http://path.to.google/qr?with=params
 @user.google_authenticate(123456) # => true
