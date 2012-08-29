@@ -74,7 +74,7 @@ end
 @user.google_label                    # => "TED@MYSWEETSERVICE.COM"
 ```
 
-You can also sepcify a column for storing the google secret.  The default is `google_secret`.
+You can also specify a column for storing the google secret.  The default is `google_secret`.
 
 Example
 
