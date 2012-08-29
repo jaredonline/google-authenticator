@@ -43,7 +43,7 @@ describe Google::Authenticator::Rails do
     before do
       time = Time.parse("2012-08-07 11:11:00 AM +0700")
       Time.stub!(:now).and_return(time)
-      @user = User.create(email: "test@test.com", user_name: "test_user")
+      @user = User.create(:email => "test@test.com", :user_name => "test_user")
       @user.google_secret = "test"
     end
     
@@ -71,7 +71,7 @@ describe Google::Authenticator::Rails do
     context 'secret column' do
       before do
         Google::Authenticator::Rails.stub!(:generate_secret).and_return("test")
-        @user = CustomUser.create(email: "test@test.com", user_name: "test_user")
+        @user = CustomUser.create(:email => "test@test.com", :user_name => "test_user")
         @user.set_google_secret!
       end
 

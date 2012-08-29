@@ -9,7 +9,7 @@ module ActiveRecord # :nodoc:
     end
 
     def google_qr_uri
-      GoogleQR.new(data: ROTP::TOTP.new(google_secret_value).provisioning_uri(google_label), size: "200x200").to_s
+      GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value).provisioning_uri(google_label), :size => "200x200").to_s
     end
 
     def google_label
