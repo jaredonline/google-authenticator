@@ -1,5 +1,7 @@
 # Google::Authenticator
 
+[![Build Status](https://secure.travis-ci.org/[YOUR_GITHUB_USERNAME]/[YOUR_PROJECT_NAME].png)](http://travis-ci.org/[YOUR_GITHUB_USERNAME]/[YOUR_PROJECT_NAME])
+
 Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.
 
 ## Installation
