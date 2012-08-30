@@ -1,4 +1,4 @@
-# Google::Authenticator
+Ï# Google::Authenticator
 
 Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.
 
@@ -55,23 +55,23 @@ class User
 	acts_as_google_authenticated :method => :user_name_with_label
 
 	def user_name_with_label
-	  "#{user_name}@mysweetservice.com"
+	  "#{user_name}@example.com"
 	end
 end
 
 @user = User.new(:user_name => "ted")
-@user.google_label                    # => "ted@mysweetservice.com"
+@user.google_label                    # => "ted@example.com"
 
 class User
 	acts_as_google_authenticated :method => Proc.new { |user| user.user_name_with_label.upcase }
 
 	def user_name_with_label
-	  "#{user_name}@mysweetservice.com"
+	  "#{user_name}@example.com"
 	end
 end
 
 @user = User.new(:user_name => "ted")
-@user.google_label                    # => "TED@MYSWEETSERVICE.COM"
+@user.google_label                    # => "TED@EXAMPLE.COM"
 ```
 
 You can also specify a column for storing the google secret.  The default is `google_secret`.
