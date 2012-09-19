@@ -1,4 +1,4 @@
-Ï# Google::Authenticator
+# GoogleAuthenticatorRails
 
 [![Build Status](https://secure.travis-ci.org/jaredonline/google-authenticator.png)](http://travis-ci.org/jaredonline/google-authenticator)
 
