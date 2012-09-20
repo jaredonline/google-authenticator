@@ -24,18 +24,17 @@ describe GoogleAuthenticatorRails::Session::Base do
     end
 
     describe '#activated?' do
-      subject { GoogleAuthenticatorRails::Session::Base }
+      subject { GoogleAuthenticatorRails::Session::Base.activated? }
+      before  { GoogleAuthenticatorRails::Session::Base.controller = controller }
 
       context 'controller present' do
-        before  { GoogleAuthenticatorRails::Session::Base.controller = MockController.new }
-
-        its(:activated?) { should be true }
+        let(:controller) { MockController.new }
+        it { should be true }
       end
 
       context 'controller missing' do
-        before  { GoogleAuthenticatorRails::Session::Base.controller = nil }
-
-        its(:activated?) { should be false }
+        let(:controller) { nil }
+        it { should be false }
       end
     end
   end
@@ -44,7 +43,8 @@ describe GoogleAuthenticatorRails::Session::Base do
     describe '#initialize' do
       context 'controller missing' do
         before  { GoogleAuthenticatorRails::Session::Base.controller = nil }
-        specify { lambda { GoogleAuthenticatorRails::Session::Base.new(nil) }.should raise_error(GoogleAuthenticatorRails::Session::Activation::ControllerMissingError) }
+        subject { lambda { GoogleAuthenticatorRails::Session::Base.new(nil) } }
+        it      { should raise_error(GoogleAuthenticatorRails::Session::Activation::ControllerMissingError) }
       end
     end
   end
