@@ -85,9 +85,7 @@ module GoogleAuthenticatorRails # :nodoc:
           attr_accessible @google_secret_column unless options[:skip_attr_accessible] == true
 
           [:google_label_column, :google_label_method, :google_secret_column].each do |cattr|
-            self.class.__send__(:define_method, cattr) do
-              instance_variable_get("@#{cattr}")
-            end
+            (class << self; self; end).class_eval { attr_reader cattr }
           end
 
           include GoogleAuthenticatorRails::ActiveRecord::Helpers

@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe GoogleAuthenticatorRails do
+  let(:random32) { "5qlcip7azyjuwm36" }
   before do
-    ROTP::Base32.stub!(:random_base32).and_return("5qlcip7azyjuwm36")
+    ROTP::Base32.stub!(:random_base32).and_return(random32)
   end
   
   it 'implements counter based passwords' do
@@ -23,7 +24,7 @@ describe GoogleAuthenticatorRails do
   end
   
   it 'can create a secret' do
-    GoogleAuthenticatorRails::generate_secret.should == "5qlcip7azyjuwm36"
+    GoogleAuthenticatorRails::generate_secret.should == random32
   end
   
   context 'integration with ActiveRecord'  do
@@ -52,8 +53,8 @@ describe GoogleAuthenticatorRails do
     end
     
     it 'creates a secret' do
-      @user.set_google_secret!
-      @user.google_secret.should == "5qlcip7azyjuwm36"
+      @user.set_google_secret
+      @user.google_secret.should == random32
     end
     
     context 'skip_attr_accessible' do
@@ -72,7 +73,7 @@ describe GoogleAuthenticatorRails do
       before do
         GoogleAuthenticatorRails.stub!(:generate_secret).and_return("test")
         @user = CustomUser.create(:email => "test@example.com", :user_name => "test_user")
-        @user.set_google_secret!
+        @user.set_google_secret
       end
 
       it 'validates code' do
@@ -84,34 +85,40 @@ describe GoogleAuthenticatorRails do
       end
     end
 
+    context 'google label' do
+      let(:user)  { NilMethodUser.create(:email => "test@example.com", :user_name => "test_user") }
+      subject     { lambda { user.google_label } }
+      it          { should raise_error(NoMethodError) }
+    end
+
     context 'qr codes' do
       
       it 'generates a url for a qr code' do
-        @user.set_google_secret!
+        @user.set_google_secret
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate off any column' do
         @user.class.acts_as_google_authenticated :column_name => :user_name
-        @user.set_google_secret!
+        @user.set_google_secret
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate with a custom proc' do
         @user.class.acts_as_google_authenticated :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
-        @user.set_google_secret!
+        @user.set_google_secret
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%40futureadvisor-admin%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate with a method symbol' do
         @user.class.acts_as_google_authenticated :method => :email
-        @user.set_google_secret!
+        @user.set_google_secret
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       
       it 'can generate with a method string' do
         @user.class.acts_as_google_authenticated :method => "email"
-        @user.set_google_secret!
+        @user.set_google_secret
         @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200"
       end
       

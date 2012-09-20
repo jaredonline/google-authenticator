@@ -11,10 +11,11 @@ require 'google-qr'
 GOOGLE_AUTHENTICATOR_RAILS_PATH = File.dirname(__FILE__) + "/google-authenticator-rails/"
 
 [
+  "version",
+  
   "action_controller",
   "active_record",
-  "session",
-  "version"
+  "session"
 ].each do |library|
    require GOOGLE_AUTHENTICATOR_RAILS_PATH + library
  end

@@ -25,13 +25,13 @@ describe GoogleAuthenticatorRails::Session::Base do
     describe '#activated?' do
       subject { GoogleAuthenticatorRails::Session::Base }
 
-      context 'true' do
+      context 'controller present' do
         before  { GoogleAuthenticatorRails::Session::Base.controller = MockController.new }
 
         its(:activated?) { should be true }
       end
 
-      context 'false' do
+      context 'controller missing' do
         before  { GoogleAuthenticatorRails::Session::Base.controller = nil }
 
         its(:activated?) { should be false }

@@ -83,3 +83,9 @@ class CustomUser < ActiveRecord::Base
 
   acts_as_google_authenticated :google_secret_column => :mfa_secret
 end
+
+class NilMethodUser < ActiveRecord::Base
+  set_table_name "users"
+
+  acts_as_google_authenticated :method => true
+end

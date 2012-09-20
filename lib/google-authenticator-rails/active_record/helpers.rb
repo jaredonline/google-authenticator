@@ -1,7 +1,7 @@
 module GoogleAuthenticatorRails # :nodoc:
   module ActiveRecord  # :nodoc:
     module Helpers
-      def set_google_secret!
+      def set_google_secret
         update_attributes("#{self.class.google_secret_column}" => GoogleAuthenticatorRails::generate_secret)
       end
 
@@ -20,6 +20,8 @@ module GoogleAuthenticatorRails # :nodoc:
             method.call(self)
           when Symbol, String
             self.__send__(method)
+          else
+            raise NoMethodError.new("the method used to generate the google_label was never defined")
         end
       end
 
