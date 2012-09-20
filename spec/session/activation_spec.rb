@@ -23,7 +23,7 @@ describe GoogleAuthenticatorRails::Session::Base do
       specify { threads.map { |thread| thread[:test_case_controller].object_id }.should eq controllers.map(&:object_id) }
     end
 
-    describe '#activated?' do
+    describe '::activated?' do
       subject { GoogleAuthenticatorRails::Session::Base.activated? }
       before  { GoogleAuthenticatorRails::Session::Base.controller = controller }
 

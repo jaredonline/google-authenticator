@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe GoogleAuthenticatorRails::ActionController::Integration do
-  describe '.included' do
+  describe '::included' do
     context 'ApplicationController already defined' do
       before  { class ApplicationController < MockController; end }
       after   { Object.send(:remove_const, :ApplicationController) }
@@ -16,7 +16,7 @@ describe GoogleAuthenticatorRails::ActionController::Integration do
     end
   end
 
-  describe '#activate_google_authenticator_rails' do
+  describe '::activate_google_authenticator_rails' do
     let(:controller) { MockController.new }
 
     before  do

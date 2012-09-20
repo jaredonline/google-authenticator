@@ -8,7 +8,7 @@ describe GoogleAuthenticatorRails::Session::Base do
   before { controller.send(:activate_google_authenticator_rails) }
 
   describe 'ClassMethods' do
-    describe '#find' do
+    describe '::find' do
       subject { UserMfaSession.find }
 
       context 'no session' do
@@ -24,7 +24,7 @@ describe GoogleAuthenticatorRails::Session::Base do
       end
     end
 
-    describe '#create' do
+    describe '::create' do
       after   { clear_cookie }
       subject { UserMfaSession.create(user) }
 
