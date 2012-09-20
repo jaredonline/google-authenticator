@@ -1,8 +1,8 @@
-Ï# Google::Authenticator
+# GoogleAuthenticatorRails
 
 [![Build Status](https://secure.travis-ci.org/jaredonline/google-authenticator.png)](http://travis-ci.org/jaredonline/google-authenticator)
 
-Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.
+Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.  Uses the Authlogic style for cookie management.
 
 ## Installation
 
@@ -28,9 +28,9 @@ acts_as_google_authenticated
 end
 
 @user = User.new
-@user.set_google_secret!          # => true
+@user.set_google_secret           # => true
 @user.google_qr_uri               # => http://path.to.google/qr?with=params
-@user.google_authenticate(123456) # => true
+@user.google_authentic?(123456) # => true
 ```
 
 Google Labels
@@ -86,10 +86,76 @@ class User
 end
 
 @user = User.new
-@user.set_google_secret!
+@user.set_google_secret
 @user.mfa_secret 		 # => "56ahi483"
 ```
 
+## Sample Rails Setup
+
+This is a very rough outline of how GoogleAuthenticatorRails is meant to manage the sessions and cookies for a Rails app.
+
+```ruby
+Gemfile
+
+gem 'rails'
+gem 'google-authenticator-rails'
+```
+
+```ruby
+app/models/users.rb
+
+class User < ActiveRecord::Base
+  acts_as_google_authenticated
+end
+```
+
+If you want to authenticate based on a model called `User`, then you should name your session object `UserMfaSession`.
+
+```ruby
+app/models/user_mfa_session.rb
+
+class UserMfaSession < GoogleAuthenticator::Session::Base
+  # no real code needed here
+end
+```
+
+```ruby
+app/controllers/user_mfa_session_controller.rb
+
+class UserMfaSessionController < ApplicationController
+  
+  def new
+    # load your view
+  end
+
+  def create
+    user = current_user # grab your currently logged in user
+    if user.google_authentic?(params[:mfa_code])
+      UserMfaSession.create(user)
+      redirect_to root_path
+    else
+      flash[:error] = "Wrong code"
+      render :new
+    end
+  end
+
+end
+```
+
+```ruby
+app/controllers/application_controller.rb
+
+class ApplicationController < ActionController::Base
+  before_filter :check_mfa
+
+  private
+  def check_mfa
+    if !(user_mfa_session = UserMfaSession.find) && user_mfa_session.record == current_user
+      redirect_to new_user_mfa_session_path
+    end
+  end
+end
+```
 
 ## Contributing
 

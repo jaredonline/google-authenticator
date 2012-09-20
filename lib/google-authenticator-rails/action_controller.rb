@@ -1,0 +1,1 @@
+require 'google-authenticator-rails/action_controller/rails_adapter'
