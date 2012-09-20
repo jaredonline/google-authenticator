@@ -30,7 +30,7 @@ end
 @user = User.new
 @user.set_google_secret           # => true
 @user.google_qr_uri               # => http://path.to.google/qr?with=params
-@user.google_authenticate(123456) # => true
+@user.google_authentic?(123456) # => true
 ```
 
 Google Labels
@@ -109,6 +109,8 @@ class User < ActiveRecord::Base
 end
 ```
 
+If you want to authenticate based on a model called `User`, then you should name your session object `UserMfaSession`.
+
 ```ruby
 app/modles/user_mfa_session.rb
 
@@ -128,7 +130,7 @@ class UserMfaSessionController < ApplicationController
 
   def create
     user = current_user # grab your currently logged in user
-    if user.google_authenticate(params[:mfa_code])
+    if user.google_authentic?(params[:mfa_code])
       UserMfaSession.create(user)
       redirect_to root_path
     else

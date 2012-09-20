@@ -19,9 +19,9 @@ module GoogleAuthenticatorRails # :nodoc:
       #   end
       # 
       #   @user = user.new
-      #   @user.set_google_secret!          # => true
+      #   @user.set_google_secret           # => true
       #   @user.google_qr_uri               # => http://path.to.google/qr?with=params
-      #   @user.google_authenticate(123456) # => true
+      #   @user.google_authentic?(123456)   # => true
       # 
       # Google Labels
       # When setting up an account with the GoogleAuthenticator you need to provide
@@ -46,36 +46,36 @@ module GoogleAuthenticatorRails # :nodoc:
       #     acts_as_google_authenticated :method => :user_name_with_label
       # 
       #     def user_name_with_label
-      #       "#{user_name}@mysweetservice.com"
+      #       "#{user_name}@example.com"
       #     end
       #   end
       # 
       #   @user = User.new(:user_name => "ted")
-      #   @user.google_label                    # => "ted@mysweetservice.com"
+      #   @user.google_label                    # => "ted@example.com"
       # 
       #   class User
       #     acts_as_google_authenticated :method => Proc.new { |user| user.user_name_with_label.upcase }
       #     
       #     def user_name_with_label
-      #       "#{user_name}@mysweetservice.com"
+      #       "#{user_name}@example.com"
       #     end
       #   end
       #   
       #   @user = User.new(:user_name => "ted")
-      #   @user.google_label                    # => "TED@MYSWEETSERVICE.COM"
+      #   @user.google_label                    # => "TED@EXAMPLE.COM"
       # 
       module ClassMethods # :nodoc
 
         # Initializes the class attributes with the specified options and includes the 
-        # GoogleAuthentication module
+        # Grespective ActiveRecord helper methods
         # 
         # Options:
         #   [:column_name] the name of the column used to create the google_label
-        #   [:method] name of the method to call to created the google_label
+        #   [:method] name of the method to call to create the google_label
         #             it supercedes :column_name
         #   [:google_secret_column] the column the secret will be stored in, defaults
         #                           to "google_secret"
-        #   [:skip_attr_accessible] defaults to false, if set to true will no call
+        #   [:skip_attr_accessible] defaults to false, if set to true will not call
         #                           attr_accessible on the google_secret_column
         def acts_as_google_authenticated(options = {})
           @google_label_column  = options[:column_name]           || :email

@@ -1,6 +1,8 @@
 module GoogleAuthenticatorRails
   module Session
     module Persistence
+      class TokenNotFound < StandardError; end
+
       def self.included(klass)
         klass.class_eval do
           extend  ClassMethods
@@ -17,17 +19,16 @@ module GoogleAuthenticatorRails
           conditions = { :persistence_token => token, :id => user_id }
           record = __send__(finder, conditions).first
           session = new(record)
-          session.valid? ? session : false
+          session.valid? ? session : nil
         else
-          false
+          nil
         end
       end
 
       def create(user)
-        raise PersistenceTokenNotFound if user.persistence_token.blank?
+        raise GoogleAuthenticatorRails::Session::Persistence::TokenNotFound if !user.respond_to?(:persistence_token) || user.persistence_token.blank?
         controller.cookies[cookie_key] = create_cookie(user.persistence_token, user.id)
-        session = new(user)
-        session.valid? ? session : false
+        new(user)
       end
 
       private

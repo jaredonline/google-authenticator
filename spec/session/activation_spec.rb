@@ -2,24 +2,25 @@ require 'spec_helper'
 
 describe GoogleAuthenticatorRails::Session::Base do
   describe 'ClassMethods' do
-    it 'sets the conroller in a thread-safe way' do
-      GoogleAuthenticatorRails::Session::Base.controller = nil
-
-      thread1 = Thread.new do
-        controller = MockController.new
-        GoogleAuthenticatorRails::Session::Base.controller = controller
-        GoogleAuthenticatorRails::Session::Base.controller.should eq controller
+    context 'thread safety' do
+      let(:thread_count) { 100 }
+      let(:controllers)  { thread_count.times.map { MockController.new } }
+      let(:threads) do
+        controllers.map do |controller|
+          Thread.new do
+            GoogleAuthenticatorRails::Session::Base.controller = controller
+            Thread.current[:test_case_controller] = GoogleAuthenticatorRails::Session::Base.controller
+          end
+        end
       end
-      thread1.join
 
-      thread2 = Thread.new do
-        controller = MockController.new
-        GoogleAuthenticatorRails::Session::Base.controller = controller
-        GoogleAuthenticatorRails::Session::Base.controller.should eq controller
+      before do
+        GoogleAuthenticatorRails::Session::Base.controller = nil
+        sleep(0.01) while threads.any?(&:status)
       end
-      thread2.join
 
-      GoogleAuthenticatorRails::Session::Base.controller.should be_nil
+      specify { GoogleAuthenticatorRails::Session::Base.controller.should be_nil }
+      specify { threads.map { |thread| thread[:test_case_controller].object_id }.should eq controllers.map(&:object_id) }
     end
 
     describe '#activated?' do

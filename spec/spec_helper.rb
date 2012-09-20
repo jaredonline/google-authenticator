@@ -21,7 +21,6 @@ class MockController
 
   def initialize
     @cookies = MockCookieJar.new
-    self.class.callbacks.each { |callback| self.__send__(callback) }
   end
 end
 
@@ -64,28 +63,46 @@ ActiveRecord::Schema.define do
     t.string :mfa_secret
     t.string :email
     t.string :user_name
+    t.string :persistence_token
+
     t.timestamps
   end
 end
 
-class User < ActiveRecord::Base
+class BaseUser < ActiveRecord::Base
   attr_accessible :email, :user_name
-  
-  acts_as_google_authenticated
+  self.table_name = "users"
 
   before_save do |user|
     user.persistence_token ||= "token"
   end
 end
 
-class CustomUser < ActiveRecord::Base
-  attr_accessible :email, :user_name
+class User < BaseUser  
+  acts_as_google_authenticated
+end
 
+class CustomUser < BaseUser
+  self.table_name = "custom_users"
   acts_as_google_authenticated :google_secret_column => :mfa_secret
 end
 
-class NilMethodUser < ActiveRecord::Base
-  set_table_name "users"
-
+class NilMethodUser < BaseUser
   acts_as_google_authenticated :method => true
+end
+
+class ColumnNameUser < BaseUser
+  acts_as_google_authenticated :column_name => :user_name
+end
+
+class ProcUser < BaseUser
+  acts_as_google_authenticated :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
+end
+
+class SymbolUser < BaseUser
+  acts_as_google_authenticated :method => :email
+end
+
+class StringUser < BaseUser
+  acts_as_google_authenticated :method => "email"
 end

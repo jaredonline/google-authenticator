@@ -5,12 +5,12 @@ describe GoogleAuthenticatorRails::Session::Base do
   let(:user)        { User.create(:password => "password", :email => "email@example.com") }
 
   # Instantiate the controller so it activates UserSession
-  before { controller }
+  before { controller.send(:activate_google_authenticator_rails) }
 
   describe 'ClassMethods' do
     describe '#find' do
       context 'no session' do
-        specify { UserMfaSession.find.should be false }
+        specify { UserMfaSession.find.should be nil }
       end
 
       context 'session' do
@@ -29,6 +29,21 @@ describe GoogleAuthenticatorRails::Session::Base do
 
       it            { should be_a UserMfaSession }
       its(:record)  { should eq user }
+
+      context 'nil user' do
+        let(:user)  { nil }
+        subject     { lambda { UserMfaSession.create(user) } }
+        it          { should raise_error(GoogleAuthenticatorRails::Session::Persistence::TokenNotFound) }
+      end
+    end
+  end
+
+  describe 'InstanceMethods' do
+    describe '#valid?' do
+      subject { UserMfaSession.create(user) }
+      context 'user object' do
+        it { should be_valid }
+      end
     end
   end
 end
