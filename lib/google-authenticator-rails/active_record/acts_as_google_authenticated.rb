@@ -67,7 +67,7 @@ module GoogleAuthenticatorRails # :nodoc:
       module ClassMethods # :nodoc
 
         # Initializes the class attributes with the specified options and includes the 
-        # Grespective ActiveRecord helper methods
+        # respective ActiveRecord helper methods
         # 
         # Options:
         #   [:column_name] the name of the column used to create the google_label
@@ -85,7 +85,7 @@ module GoogleAuthenticatorRails # :nodoc:
           attr_accessible @google_secret_column unless options[:skip_attr_accessible] == true
 
           [:google_label_column, :google_label_method, :google_secret_column].each do |cattr|
-            (class << self; self; end).class_eval { attr_reader cattr }
+            self.singleton_class.class_eval { attr_reader cattr }
           end
 
           include GoogleAuthenticatorRails::ActiveRecord::Helpers

@@ -112,7 +112,7 @@ end
 If you want to authenticate based on a model called `User`, then you should name your session object `UserMfaSession`.
 
 ```ruby
-app/modles/user_mfa_session.rb
+app/models/user_mfa_session.rb
 
 class UserMfaSession < GoogleAuthenticator::Session::Base
   # no real code needed here
