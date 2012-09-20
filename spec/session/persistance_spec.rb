@@ -9,14 +9,15 @@ describe GoogleAuthenticatorRails::Session::Base do
 
   describe 'ClassMethods' do
     describe '#find' do
+      subject { UserMfaSession.find }
+
       context 'no session' do
-        specify { UserMfaSession.find.should be nil }
+        it { should be nil }
       end
 
       context 'session' do
         before  { set_cookie_for(user) }
         after   { clear_cookie }
-        subject { UserMfaSession.find }
 
         it            { should be_a UserMfaSession }
         its(:record)  { should eq user }
