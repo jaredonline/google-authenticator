@@ -66,18 +66,6 @@ describe GoogleAuthenticatorRails do
       @user.set_google_secret
       @user.google_secret.should == random32
     end
-    
-    context 'skip_attr_accessible' do
-      it 'respects the :skip_attr_accessible flag' do
-        User.should_not_receive(:attr_accessible).with(:google_secret)
-        User.acts_as_google_authenticated :skip_attr_accessible => true
-      end
-
-      it 'respects the default' do
-        User.should_receive(:attr_accessible).with(:google_secret)
-        User.acts_as_google_authenticated
-      end
-    end
 
     context 'secret column' do
       before do

@@ -2,7 +2,8 @@ module GoogleAuthenticatorRails # :nodoc:
   module ActiveRecord  # :nodoc:
     module Helpers
       def set_google_secret
-        update_attributes(self.class.google_secret_column => GoogleAuthenticatorRails::generate_secret)
+        self.__send__("#{self.class.google_secret_column}=", GoogleAuthenticatorRails::generate_secret)
+        save
       end
 
       def google_authentic?(code)

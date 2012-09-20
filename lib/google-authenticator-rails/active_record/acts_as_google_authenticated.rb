@@ -81,8 +81,6 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_label_column  = options[:column_name]           || :email
           @google_label_method  = options[:method]                || :default_google_label_method
           @google_secret_column = options[:google_secret_column]  || :google_secret
-          
-          attr_accessible @google_secret_column unless options[:skip_attr_accessible] == true
 
           [:google_label_column, :google_label_method, :google_secret_column].each do |cattr|
             self.singleton_class.class_eval { attr_reader cattr }
