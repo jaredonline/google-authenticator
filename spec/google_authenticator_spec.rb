@@ -37,19 +37,19 @@ describe GoogleAuthenticatorRails do
     end
     
     it 'validates codes' do
-      @user.google_authenticate(472374).should be_true
+      @user.google_authentic?(472374).should be_true
     end
     
     it 'validates with 5 seconds of drift' do
       time = Time.parse("2012-08-07 11:11:34 AM +0700")
       Time.stub!(:now).and_return(time)
-      @user.google_authenticate(472374).should be_true
+      @user.google_authentic?(472374).should be_true
     end
     
     it 'does not validate with 6 seconds of drift' do
       time = Time.parse("2012-08-07 11:11:36 AM +0700")
       Time.stub!(:now).and_return(time)
-      @user.google_authenticate(472374).should be_false
+      @user.google_authentic?(472374).should be_false
     end
     
     it 'creates a secret' do
@@ -77,7 +77,7 @@ describe GoogleAuthenticatorRails do
       end
 
       it 'validates code' do
-        @user.google_authenticate(472374).should be_true
+        @user.google_authentic?(472374).should be_true
       end
 
       it 'generates a url for a qr code' do

@@ -5,7 +5,7 @@ module GoogleAuthenticatorRails # :nodoc:
         update_attributes("#{self.class.google_secret_column}" => GoogleAuthenticatorRails::generate_secret)
       end
 
-      def google_authenticate(code)
+      def google_authentic?(code)
         GoogleAuthenticatorRails.valid?(code, google_secret_value)
       end
 
