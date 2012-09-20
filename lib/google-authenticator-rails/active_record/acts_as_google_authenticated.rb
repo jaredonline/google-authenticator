@@ -80,6 +80,8 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_label_method  = options[:method]                || :default_google_label_method
           @google_secret_column = options[:google_secret_column]  || :google_secret
 
+          puts ":skip_attr_accessible is no longer required.  Called from #{Kernel.caller[0]}}" if options.has_key?(:skip_attr_accessible)
+
           [:google_label_column, :google_label_method, :google_secret_column].each do |cattr|
             self.singleton_class.class_eval { attr_reader cattr }
           end
