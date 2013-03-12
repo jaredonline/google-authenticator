@@ -57,7 +57,7 @@ module GoogleAuthenticatorRails
         value = [token, user_id].join('::')
         {
           :value    => value,
-          :expires  => 24.hours.from_now
+          :expires  => GoogleAuthenticatorRails.time_until_expiration.from_now
         }
       end
 
