@@ -25,7 +25,10 @@ GOOGLE_AUTHENTICATOR_RAILS_PATH = File.dirname(__FILE__) + "/google-authenticato
 module GoogleAuthenticatorRails
   # Drift is set to 6 because ROTP drift is not inclusive.  This allows a drift of 5 seconds.
   DRIFT = 6
-   
+
+  # How long a Session::Persistence cookie should last.
+  @@time_until_expiration = 24.hours
+
   def self.generate_password(secret, iteration)
     ROTP::HOTP.new(secret).at(iteration)
   end
@@ -40,5 +43,13 @@ module GoogleAuthenticatorRails
 
   def self.generate_secret
     ROTP::Base32.random_base32
+  end
+
+  def self.time_until_expiration
+    @@time_until_expiration
+  end
+
+  def self.time_until_expiration=(time_until_expiration)
+    @@time_until_expiration = time_until_expiration
   end
 end
