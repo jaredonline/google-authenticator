@@ -102,6 +102,15 @@ gem 'rails'
 gem 'google-authenticator-rails'
 ```
 
+First add a field to your user model to hold the Google token.
+```ruby
+class AddGoogleSecretToUser < ActiveRecord::Migration
+  def change
+    add_column :users, :google_secret, :string
+  end
+end
+```
+
 ```ruby
 app/models/users.rb
 
@@ -115,7 +124,7 @@ If you want to authenticate based on a model called `User`, then you should name
 ```ruby
 app/models/user_mfa_session.rb
 
-class UserMfaSession < GoogleAuthenticator::Session::Base
+class UserMfaSession <  GoogleAuthenticatorRails::Session::Base
   # no real code needed here
 end
 ```
@@ -151,7 +160,7 @@ class ApplicationController < ActionController::Base
 
   private
   def check_mfa
-    if !(user_mfa_session = UserMfaSession.find) && user_mfa_session.record == current_user
+     if !(user_mfa_session = UserMfaSession.find) && (user_mfa_session ? user_mfa_session.record == current_user : !user_mfa_session)
       redirect_to new_user_mfa_session_path
     end
   end
