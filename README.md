@@ -102,7 +102,7 @@ gem 'rails'
 gem 'google-authenticator-rails'
 ```
 
-First add a field on your user model for holds the google token
+First add a field to your user model to hold the Google token.
 ```ruby
 class AddGoogleSecretToUser < ActiveRecord::Migration
   def change
