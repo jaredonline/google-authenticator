@@ -1,7 +1,5 @@
 # GoogleAuthenticatorRails
 
-[![Gem Version](https://badge.fury.io/rb/google-authenticator-rails.png)](http://badge.fury.io/rb/google-authenticator-rails)
-[![Build Status](https://secure.travis-ci.org/jaredonline/google-authenticator.png)](http://travis-ci.org/jaredonline/google-authenticator)
 
 Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.  Uses the Authlogic style for cookie management.
 
@@ -133,7 +131,7 @@ end
 app/controllers/user_mfa_session_controller.rb
 
 class UserMfaSessionController < ApplicationController
-  
+
   def new
     # load your view
   end
