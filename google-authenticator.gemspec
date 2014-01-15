@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Google::Authenticator::Rails::VERSION
   
-  gem.add_dependency "rotp"
+  gem.add_dependency "rotp", "= 1.4.1"
   gem.add_dependency "activerecord", "~> 3.2.16"
   gem.add_dependency "google-qr"
   gem.add_dependency "actionpack"
