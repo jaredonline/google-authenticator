@@ -1,5 +1,11 @@
-appraise "rails2.3" do
-  gem "activerecord", "~> 2.3.8"
+version_info = RUBY_VERSION.split(".")
+
+major = version_info.first.to_i
+
+if major < 2
+  appraise "rails2.3" do
+    gem "activerecord", "~> 2.3.8"
+  end
 end
 
 appraise "rails3.0" do
