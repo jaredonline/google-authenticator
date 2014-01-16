@@ -2,6 +2,8 @@ require 'time'
 require 'active_record'
 require 'action_controller'
 require 'rotp'
+require 'bundler'
+require 'bundler/setup'
 
 require 'google-authenticator-rails'
 
@@ -70,7 +72,10 @@ ActiveRecord::Schema.define do
 end
 
 class BaseUser < ActiveRecord::Base
-  attr_accessible :email, :user_name, :password
+  if GoogleAuthenticatorRails::ACTIVERECORD_VERSION < Gem::Version.new("4.0.0")
+    attr_accessible :email, :user_name, :password
+  end
+
   self.table_name = "users"
 
   before_save do |user|

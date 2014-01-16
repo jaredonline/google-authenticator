@@ -12,7 +12,7 @@ GOOGLE_AUTHENTICATOR_RAILS_PATH = File.dirname(__FILE__) + "/google-authenticato
 
 [
   "version",
-  
+
   "action_controller",
   "active_record",
   "session"
@@ -21,10 +21,13 @@ GOOGLE_AUTHENTICATOR_RAILS_PATH = File.dirname(__FILE__) + "/google-authenticato
  end
 
  # Sets up some basic accessors for use with the ROTP module
-# 
+#
 module GoogleAuthenticatorRails
   # Drift is set to 6 because ROTP drift is not inclusive.  This allows a drift of 5 seconds.
   DRIFT = 6
+
+  # This is the ActiveRecord version being used
+  ACTIVERECORD_VERSION = Bundler.rubygems.all_specs.find { |spec| spec.name == "activerecord" }.version
 
   # How long a Session::Persistence cookie should last.
   @@time_until_expiration = 24.hours

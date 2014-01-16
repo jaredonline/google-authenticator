@@ -3,7 +3,7 @@ PATH
   specs:
     google-authenticator-rails (0.0.6)
       actionpack
-      activerecord (< 4.0.0)
+      activerecord
       google-qr
       rotp (= 1.4.1)
 
