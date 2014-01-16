@@ -21,9 +21,3 @@ end
 appraise "rails3.2." do
   gem "activerecord", "~> 3.2.0"
 end
-
-if (major == 1 && minor > 8)
-  appraise "rails4.0" do
-    gem "activerecord", "~> 4.0.0"
-  end
-end

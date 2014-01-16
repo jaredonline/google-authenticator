@@ -72,9 +72,7 @@ ActiveRecord::Schema.define do
 end
 
 class BaseUser < ActiveRecord::Base
-  if GoogleAuthenticatorRails::ACTIVERECORD_VERSION < Gem::Version.new("4.0.0")
-    attr_accessible :email, :user_name, :password
-  end
+  attr_accessible :email, :user_name, :password
 
   self.table_name = "users"
 
