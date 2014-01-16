@@ -5,6 +5,7 @@
 .yardoc
 .rvmrc
 .rspec
+Gemfile.lock
 InstalledFiles
 _yardoc
 coverage
