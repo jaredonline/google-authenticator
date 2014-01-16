@@ -37,12 +37,12 @@ class MockCookieJar < Hash
   def delete(key, options = {})
     super(key)
   end
-end 
+end
 
 class UserMfaSession < GoogleAuthenticatorRails::Session::Base; end
 
 ActiveRecord::Base.establish_connection(
-  :adapter => 'sqlite3',
+  :adapter  => 'sqlite3',
   :database => ':memory:'
 )
 
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define do
 end
 
 class BaseUser < ActiveRecord::Base
-  attr_accessible :email, :user_name
+  attr_accessible :email, :user_name, :password
   self.table_name = "users"
 
   before_save do |user|
@@ -78,7 +78,7 @@ class BaseUser < ActiveRecord::Base
   end
 end
 
-class User < BaseUser  
+class User < BaseUser
   acts_as_google_authenticated
 end
 
