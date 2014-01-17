@@ -92,6 +92,18 @@ end
 @user.mfa_secret 		 # => "56ahi483"
 ```
 
+You can also specify which column the appropriate `MfaSession` subclass should use to look up the record:
+
+Example
+
+```ruby
+class User
+  acts_as_google_authenticated :lookup_token => :salt
+end
+```
+
+The above will cause the `UserMfaSession` class to call `User.where(:salt => cookie_salt)` or `User.scoped(:conditions => { :salt => cookie_salt })` to find the appropriate record.
+
 ## Sample Rails Setup
 
 This is a very rough outline of how GoogleAuthenticatorRails is meant to manage the sessions and cookies for a Rails app.
