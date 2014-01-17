@@ -26,7 +26,7 @@ Example:
 
 ```ruby
 class User
-acts_as_google_authenticated
+  acts_as_google_authenticated
 end
 
 @user = User.new
@@ -49,7 +49,7 @@ Examples:
 
 ```ruby
 class User
-	acts_as_google_authenticated :column => :user_name
+  acts_as_google_authenticated :column => :user_name
 end
 
 @user = User.new(:user_name => "ted")
