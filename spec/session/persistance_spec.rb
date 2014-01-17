@@ -16,16 +16,25 @@ describe GoogleAuthenticatorRails::Session::Base do
       end
 
       context 'session' do
-        before  { set_cookie_for(user) }
-        after   { clear_cookie }
+        before  { set_cookie_for(user) unless user.nil? }
+        after   { clear_cookie unless user.nil? }
 
         it            { should be_a UserMfaSession }
         its(:record)  { should eq user }
+
+        context 'custom lookup token' do
+          let(:user) { SaltUser.create(:password => "password", :email => "email@example.com") }
+
+          subject { SaltUserMfaSession.find }
+
+          it           { should be_a SaltUserMfaSession }
+          its(:record) { should eq user }
+        end
       end
     end
 
     describe '::create' do
-      after   { clear_cookie }
+      after   { clear_cookie unless user.nil? }
       subject { UserMfaSession.create(user) }
 
       it            { should be_a UserMfaSession }
@@ -50,9 +59,13 @@ describe GoogleAuthenticatorRails::Session::Base do
 end
 
 def set_cookie_for(user)
-  controller.cookies[UserMfaSession.__send__(:cookie_key)] = { :value => [user.persistence_token, user.id].join('::'), :expires => nil }
+  controller.cookies[klass(user).__send__(:cookie_key)] = { :value => [user.google_token_value, user.id].join('::'), :expires => nil }
+end
+
+def klass(user)
+  "#{user.class.to_s}MfaSession".constantize unless user.nil?
 end
 
 def clear_cookie
-  controller.cookies[UserMfaSession.__send__(:cookie_key)] = nil
+  controller.cookies[klass(user).__send__(:cookie_key)] = nil
 end

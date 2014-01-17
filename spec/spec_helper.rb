@@ -57,6 +57,7 @@ ActiveRecord::Schema.define do
     t.string :user_name
     t.string :password
     t.string :persistence_token
+    t.string :salt
 
     t.timestamps
   end
@@ -66,6 +67,7 @@ ActiveRecord::Schema.define do
     t.string :email
     t.string :user_name
     t.string :persistence_token
+    t.string :salt
 
     t.timestamps
   end
@@ -78,6 +80,7 @@ class BaseUser < ActiveRecord::Base
 
   before_save do |user|
     user.persistence_token ||= "token"
+    user.salt              ||= "salt"
   end
 end
 
@@ -108,4 +111,10 @@ end
 
 class StringUser < BaseUser
   acts_as_google_authenticated :method => "email"
+end
+
+class SaltUserMfaSession < GoogleAuthenticatorRails::Session::Base; end
+
+class SaltUser < BaseUser
+  acts_as_google_authenticated :lookup_token => :salt
 end

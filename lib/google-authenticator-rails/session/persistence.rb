@@ -16,7 +16,7 @@ module GoogleAuthenticatorRails
         cookie = controller.cookies[cookie_key]
         if cookie
           token, user_id = parse_cookie(cookie).values_at(:token, :user_id)
-          conditions = { :persistence_token => token, :id => user_id }
+          conditions = { klass.google_lookup_token => token, :id => user_id }
           record = __send__(finder, conditions).first
           session = new(record)
           session.valid? ? session : nil
@@ -26,8 +26,8 @@ module GoogleAuthenticatorRails
       end
 
       def create(user)
-        raise GoogleAuthenticatorRails::Session::Persistence::TokenNotFound if !user.respond_to?(:persistence_token) || user.persistence_token.blank?
-        controller.cookies[cookie_key] = create_cookie(user.persistence_token, user.id)
+        raise GoogleAuthenticatorRails::Session::Persistence::TokenNotFound if user.nil? || !user.respond_to?(user.class.google_lookup_token) || user.google_token_value.blank?
+        controller.cookies[cookie_key] = create_cookie(user.google_token_value, user.id)
         new(user)
       end
 
