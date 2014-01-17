@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/google-authenticator-rails.png)](http://badge.fury.io/rb/google-authenticator-rails)
 [![Build Status](https://secure.travis-ci.org/jaredonline/google-authenticator.png)](http://travis-ci.org/jaredonline/google-authenticator)
-[![Code Climate](https://codeclimate.com/repos/52d87827e30ba05abf0010c8/badges/a5a86d94e894763e190a/gpa.png)](https://codeclimate.com/repos/52d87827e30ba05abf0010c8/feed)
+[![Code Climate](https://codeclimate.com/github/jaredonline/google-authenticator.png)](https://codeclimate.com/github/jaredonline/google-authenticator)
 
 Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.  Uses the Authlogic style for cookie management.
 
