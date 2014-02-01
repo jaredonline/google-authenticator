@@ -52,7 +52,7 @@ module GoogleAuthenticatorRails # :nodoc:
       end
 
       def google_issuer
-        self.__send__(self.class.google_issuer)
+        self.class.google_issuer
       end
     end
   end
