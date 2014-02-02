@@ -104,6 +104,18 @@ end
 
 The above will cause the `UserMfaSession` class to call `User.where(:salt => cookie_salt)` or `User.scoped(:conditions => { :salt => cookie_salt })` to find the appropriate record.
 
+You can also specify a name for the 'issuer' (the name of the website) where the user is using this token:
+
+Example
+
+```ruby
+class User
+  acts_as_google_authenticated :issuer => 'your_site.com'
+end
+```
+
+By this way your user will have the name of your site at the authenticator card besides the current token.
+
 ## Sample Rails Setup
 
 This is a very rough outline of how GoogleAuthenticatorRails is meant to manage the sessions and cookies for a Rails app.
