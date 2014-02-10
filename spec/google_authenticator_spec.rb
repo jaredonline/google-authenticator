@@ -11,19 +11,19 @@ describe GoogleAuthenticatorRails do
 
     context 'counter = 1' do
       let(:counter) { 1 }
-      it { should == 812658 }
+      it { should == 868864 }
     end
 
     context 'counter = 2' do
       let(:counter) { 2 }
-      it { should == 73348 }
+      it { should == 304404 }
     end
   end
 
   context 'time-based passwords' do
     let(:time)    { Time.parse("2012-08-07 11:11:11 AM +0700") }
     let(:secret)  { "test" }
-    let(:code)    { 472374 }
+    let(:code)    { 922511 }
     before        { Time.stub!(:now).and_return(time) }
 
     specify { GoogleAuthenticatorRails::time_based_password(secret).should == code }
@@ -47,7 +47,7 @@ describe GoogleAuthenticatorRails do
     end
 
     context 'code validation' do
-      subject { @user.google_authentic?(472374) }
+      subject { @user.google_authentic?(922511) }
 
       it { should be true }
 
@@ -75,7 +75,7 @@ describe GoogleAuthenticatorRails do
       end
 
       it 'validates code' do
-        @user.google_authentic?(472374).should be_true
+        @user.google_authentic?(922511).should be_true
       end
 
       it 'generates a url for a qr code' do
