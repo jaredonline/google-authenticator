@@ -77,15 +77,17 @@ module GoogleAuthenticatorRails # :nodoc:
         #                           to "google_secret"
         #   [:lookup_token] the column to use to find the record from the DB, defaults
         #                   to "persistence_token"
+        #   [:issuer] the name of the issuer to appear at the app (is optional)
         def acts_as_google_authenticated(options = {})
           @google_label_column  = options[:column_name]           || :email
           @google_label_method  = options[:method]                || :default_google_label_method
           @google_secret_column = options[:google_secret_column]  || :google_secret
           @google_lookup_token  = options[:lookup_token]          || :persistence_token
+          @google_issuer        = options[:issuer]
 
           puts ":skip_attr_accessible is no longer required.  Called from #{Kernel.caller[0]}}" if options.has_key?(:skip_attr_accessible)
 
-          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token].each do |cattr|
+          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_issuer].each do |cattr|
             self.singleton_class.class_eval { attr_reader cattr }
           end
 
