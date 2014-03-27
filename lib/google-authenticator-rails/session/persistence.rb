@@ -4,7 +4,9 @@ module GoogleAuthenticatorRails
       class TokenNotFound < StandardError; end
 
       class << self
-        attr_writer :find_classes
+        def find_classes=(x)
+          @find_classes = Hash[ x.map { |kv| kv.map(&:to_s) } ]
+        end
 
         def find_classes
           @find_classes ||= {}
@@ -20,27 +22,12 @@ module GoogleAuthenticatorRails
     end
 
     module ClassMethods
-      def which_class
-        (instance_variable_defined? :@which_class) ? @which_class : (@which_class = get_class) # nil memoization
-      end
-
-      def get_class
-        begin
-          klass
-        rescue NameError
-          Kernel.const_get ::GoogleAuthenticatorRails::Session::Persistence.find_classes[self.to_sym]
-        end
-      end
-
-      def column_name
-        "#{which_class}_id".downcase.to_sym
-      end
 
       def find
         cookie = controller.cookies[cookie_key]
         if cookie
           token, user_id = parse_cookie(cookie).values_at(:token, column_name)
-          conditions = { which_class.google_lookup_token => token, :id => user_id }
+          conditions = { klass.google_lookup_token => token, :id => user_id }
           record = __send__(finder, conditions).first
           session = new(record)
           session.valid? ? session : nil
@@ -56,20 +43,30 @@ module GoogleAuthenticatorRails
       end
 
       private
+      def column_name
+        "#{klass}_id".downcase.to_sym
+      end
+
       def finder
-        @_finder ||= which_class.public_methods.include?(:where) ? :rails_3_finder : :rails_2_finder
+        @_finder ||= klass.public_methods.include?(:where) ? :rails_3_finder : :rails_2_finder
       end
 
       def rails_3_finder(conditions)
-        which_class.where(conditions)
+        klass.where(conditions)
       end
 
       def rails_2_finder(conditions)
-        which_class.scoped(:conditions => conditions)
+        klass.scoped(:conditions => conditions)
       end
 
       def klass
-        @_klass ||= "#{self.to_s.sub("MfaSession", "")}".constantize
+        @_klass ||= find_klass
+      end
+
+      def find_klass
+        "#{self.to_s.sub("MfaSession", "")}".constantize
+      rescue NameError
+        ::GoogleAuthenticatorRails::Session::Persistence.find_classes[self.to_s].constantize
       end
 
       def parse_cookie(cookie)
