@@ -141,6 +141,7 @@ app/models/users.rb
 
 class User < ActiveRecord::Base
   acts_as_google_authenticated
+  alias :persistence_token :to_param # if persistence_token and lookup_token are not set elsewhere
 end
 ```
 
