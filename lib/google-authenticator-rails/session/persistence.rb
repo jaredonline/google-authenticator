@@ -3,6 +3,14 @@ module GoogleAuthenticatorRails
     module Persistence
       class TokenNotFound < StandardError; end
 
+      class << self
+        attr_writer :find_classes
+
+        def find_classes
+          @find_classes ||= {}
+        end
+      end
+
       def self.included(klass)
         klass.class_eval do
           extend  ClassMethods
@@ -17,17 +25,15 @@ module GoogleAuthenticatorRails
       end
 
       def get_class
-        ::ActiveRecord::Base.subclasses.each { |klazz| 
-          return klazz if klazz.included_modules.include? ::GoogleAuthenticatorRails::ActiveRecord::Helpers
-        }
-        return nil
+        begin
+          klass
+        rescue NameError
+          Kernel.const_get ::GoogleAuthenticatorRails::Session::Persistence.find_classes[self.to_sym]
+        end
       end
 
       def column_name
-        klazz = which_class
-        id_column = "#{klazz}_id".downcase.to_sym
-        $stderr.puts "id_column=#{id_column}"
-        id_column
+        "#{which_class}_id".downcase.to_sym
       end
 
       def find
