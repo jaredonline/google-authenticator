@@ -7,6 +7,7 @@ module GoogleAuthenticatorRails
         klass.class_eval do
           extend  ClassMethods
           include InstanceMethods
+          ID_COLUMN = "#{self.class.downcase}_id".to_sym
         end
       end
     end
@@ -15,7 +16,7 @@ module GoogleAuthenticatorRails
       def find
         cookie = controller.cookies[cookie_key]
         if cookie
-          token, user_id = parse_cookie(cookie).values_at(:token, :user_id)
+          token, user_id = parse_cookie(cookie).values_at(:token, ID_COLUMN)
           conditions = { klass.google_lookup_token => token, :id => user_id }
           record = __send__(finder, conditions).first
           session = new(record)
