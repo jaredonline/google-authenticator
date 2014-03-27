@@ -7,17 +7,34 @@ module GoogleAuthenticatorRails
         klass.class_eval do
           extend  ClassMethods
           include InstanceMethods
-          ID_COLUMN = "#{self.class.downcase}_id".to_sym
         end
       end
     end
 
     module ClassMethods
+      def which_class
+        (instance_variable_defined? :@which_class) ? @which_class : (@which_class = get_class) # nil memoization
+      end
+
+      def get_class
+        ::ActiveRecord::Base.subclasses.each { |klazz| 
+          return klazz if klazz.included_modules.include? ::GoogleAuthenticatorRails::ActiveRecord::Helpers
+        }
+        return nil
+      end
+
+      def column_name
+        klazz = which_class
+        id_column = "#{klazz}_id".downcase.to_sym
+        $stderr.puts "id_column=#{id_column}"
+        id_column
+      end
+
       def find
         cookie = controller.cookies[cookie_key]
         if cookie
-          token, user_id = parse_cookie(cookie).values_at(:token, ID_COLUMN)
-          conditions = { klass.google_lookup_token => token, :id => user_id }
+          token, user_id = parse_cookie(cookie).values_at(:token, column_name)
+          conditions = { which_class.google_lookup_token => token, :id => user_id }
           record = __send__(finder, conditions).first
           session = new(record)
           session.valid? ? session : nil
@@ -34,15 +51,15 @@ module GoogleAuthenticatorRails
 
       private
       def finder
-        @_finder ||= klass.public_methods.include?(:where) ? :rails_3_finder : :rails_2_finder
+        @_finder ||= which_class.public_methods.include?(:where) ? :rails_3_finder : :rails_2_finder
       end
 
       def rails_3_finder(conditions)
-        klass.where(conditions)
+        which_class.where(conditions)
       end
 
       def rails_2_finder(conditions)
-        klass.scoped(:conditions => conditions)
+        which_class.scoped(:conditions => conditions)
       end
 
       def klass
