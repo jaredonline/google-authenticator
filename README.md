@@ -289,7 +289,10 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+## Other configuration
+
 By default, the cookie related to the MfaSession expires in 24 hours, but this can be changed:
+
 ```ruby
 config/initializers/google_authenticator_rails.rb
 
