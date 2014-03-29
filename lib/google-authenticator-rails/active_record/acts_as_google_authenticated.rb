@@ -77,7 +77,8 @@ module GoogleAuthenticatorRails # :nodoc:
         #                           to "google_secret"
         #   [:lookup_token] the column to use to find the record from the DB, defaults
         #                   to "persistence_token"
-        #   [:issuer] the name of the issuer to appear at the app (is optional)
+        #   [:issuer] the name of the issuer to appear in the app (optional), defaults
+        #             to ""
         def acts_as_google_authenticated(options = {})
           @google_label_column  = options[:column_name]           || :email
           @google_label_method  = options[:method]                || :default_google_label_method
