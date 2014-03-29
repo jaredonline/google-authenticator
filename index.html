@@ -168,7 +168,8 @@ secret token used to generate the MFA code.</p>
 </pre></div>
 
 <h3>
-<a name="a-note-about-cookie-creation-and-sessionpersistencetokennotfound" class="anchor" href="#a-note-about-cookie-creation-and-sessionpersistencetokennotfound"><span class="octicon octicon-link"></span></a>A note about cookie creation and [[<code>Session::Persistence::TokenNotFound</code>]]</h3>
+<a name="a-note-about-cookie-creation-and-sessionpersistencetokennotfound" class="anchor" href="#a-note-about-cookie-creation-and-sessionpersistencetokennotfound"><span class="octicon octicon-link"></span></a>A note about cookie creation and <code>Session::Persistence::TokenNotFound</code>
+</h3>
 
 <p><code>GoogleAuthenticatorRails</code> looks up the record based on the cookie created when you call <code>MfaSession#create</code>. The <code>#create</code> method looks into the record class (in our example, <code>User</code>) and looks at the configured <code>:lookup_token</code> option. It uses that option to save two pieces of information into the cookie, the <code>id</code> of the record and the token, which defaults to <code>persistence_token</code>. <code>persistence_token</code> is what Authlogic uses, which this gem was originally designed to work with.</p>
 
