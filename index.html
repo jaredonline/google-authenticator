@@ -78,8 +78,8 @@
 <p><code>GoogleAuthenticatorRails</code> allows you to customize how the record will create that label.  There are three options:</p>
 
 <ul>
-<li>The default just uses the column "email" on the model</li>
-<li>You can specify a custom column with the :column_name option</li>
+<li>The default just uses the column <code>email</code> on the model</li>
+<li>You can specify a custom column with the <code>:column_name</code> option</li>
 <li>You can specify a custom method via a symbol or a proc</li>
 </ul><p>Example:</p>
 
@@ -112,6 +112,10 @@
 <span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:user_name</span> <span class="o">=&gt;</span> <span class="s2">"ted"</span><span class="p">)</span>
 <span class="vi">@user</span><span class="o">.</span><span class="n">google_label</span>                    <span class="c1"># =&gt; "TED@EXAMPLE.COM"</span>
 </pre></div>
+
+<p>Here's what the labels look like in Google Authenticator for iPhone:</p>
+
+<p><img src="http://jaredonline.github.io/google-authenticator/images/gar-label.png" alt="iPhone Label Screenshot"></p>
 
 <h2>
 <a name="google-secret" class="anchor" href="#google-secret"><span class="octicon octicon-link"></span></a>Google Secret</h2>
@@ -164,8 +168,7 @@ secret token used to generate the MFA code.</p>
 </pre></div>
 
 <h3>
-<a name="a-note-about-cookie-creation-and-sessionpersistencetokennotfound" class="anchor" href="#a-note-about-cookie-creation-and-sessionpersistencetokennotfound"><span class="octicon octicon-link"></span></a>A note about cookie creation and <code>Session::Persistence::TokenNotFound</code>
-</h3>
+<a name="a-note-about-cookie-creation-and-sessionpersistencetokennotfound" class="anchor" href="#a-note-about-cookie-creation-and-sessionpersistencetokennotfound"><span class="octicon octicon-link"></span></a>A note about cookie creation and [[<code>Session::Persistence::TokenNotFound</code>]]</h3>
 
 <p><code>GoogleAuthenticatorRails</code> looks up the record based on the cookie created when you call <code>MfaSession#create</code>. The <code>#create</code> method looks into the record class (in our example, <code>User</code>) and looks at the configured <code>:lookup_token</code> option. It uses that option to save two pieces of information into the cookie, the <code>id</code> of the record and the token, which defaults to <code>persistence_token</code>. <code>persistence_token</code> is what Authlogic uses, which this gem was originally designed to work with.</p>
 
@@ -246,6 +249,10 @@ secret token used to generate the MFA code.</p>
 
 <p>This way your user will have the name of your site at the authenticator card besides the current token.</p>
 
+<p>Here's what the issuers look like in Google Authenticator for iPhone:</p>
+
+<p><img src="http://jaredonline.github.io/google-authenticator/images/gar-issuer.png" alt="iPhone Label Screenshot"></p>
+
 <h2>
 <a name="sample-rails-setup" class="anchor" href="#sample-rails-setup"><span class="octicon octicon-link"></span></a>Sample Rails Setup</h2>
 
@@ -318,9 +325,12 @@ secret token used to generate the MFA code.</p>
 <span class="k">end</span>
 </pre></div>
 
+<h2>
+<a name="other-configuration" class="anchor" href="#other-configuration"><span class="octicon octicon-link"></span></a>Other configuration</h2>
+
 <p>By default, the cookie related to the MfaSession expires in 24 hours, but this can be changed:</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">config</span><span class="o">/</span><span class="n">initializers</span><span class="o">/</span><span class="n">google_authenticator_rails</span><span class="o">.</span><span class="n">rb</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># config/initializers/google_authenticator_rails.rb</span>
 
 <span class="no">GoogleAuthenticatorRails</span><span class="o">.</span><span class="n">time_until_expiration</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">month</span>
 </pre></div>
