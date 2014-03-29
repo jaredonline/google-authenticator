@@ -218,7 +218,7 @@ Here's what the issuers look like in Google Authenticator for iPhone:
 This is a very rough outline of how `GoogleAuthenticatorRails` is meant to manage the sessions and cookies for a Rails app.
 
 ```ruby
-Gemfile
+# Gemfile
 
 gem 'rails'
 gem 'google-authenticator-rails'
@@ -234,7 +234,7 @@ end
 ```
 
 ```ruby
-app/models/users.rb
+# app/models/users.rb
 
 class User < ActiveRecord::Base
   acts_as_google_authenticated
@@ -244,7 +244,7 @@ end
 If you want to authenticate based on a model called `User`, then you should name your session object `UserMfaSession`.
 
 ```ruby
-app/models/user_mfa_session.rb
+# app/models/user_mfa_session.rb
 
 class UserMfaSession <  GoogleAuthenticatorRails::Session::Base
   # no real code needed here
@@ -252,7 +252,7 @@ end
 ```
 
 ```ruby
-app/controllers/user_mfa_session_controller.rb
+# app/controllers/user_mfa_session_controller.rb
 
 class UserMfaSessionController < ApplicationController
   
@@ -275,7 +275,7 @@ end
 ```
 
 ```ruby
-app/controllers/application_controller.rb
+# app/controllers/application_controller.rb
 
 class ApplicationController < ActionController::Base
   before_filter :check_mfa
