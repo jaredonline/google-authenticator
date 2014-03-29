@@ -209,6 +209,10 @@ end
 
 This way your user will have the name of your site at the authenticator card besides the current token.
 
+Here's what the issuers look like in Google Authenticator for iPhone:
+
+![iPhone Label Screenshot](http://jaredonline.github.io/google-authenticator/images/gar-issuer.png)
+
 ## Sample Rails Setup
 
 This is a very rough outline of how `GoogleAuthenticatorRails` is meant to manage the sessions and cookies for a Rails app.
