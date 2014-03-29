@@ -259,7 +259,7 @@ secret token used to generate the MFA code.</p>
 
 <p>This is a very rough outline of how <code>GoogleAuthenticatorRails</code> is meant to manage the sessions and cookies for a Rails app.</p>
 
-<div class="highlight highlight-ruby"><pre><span class="no">Gemfile</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># Gemfile</span>
 
 <span class="n">gem</span> <span class="s1">'rails'</span>
 <span class="n">gem</span> <span class="s1">'google-authenticator-rails'</span>
@@ -274,7 +274,7 @@ secret token used to generate the MFA code.</p>
 <span class="k">end</span>
 </pre></div>
 
-<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">users</span><span class="o">.</span><span class="n">rb</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/models/users.rb</span>
 
 <span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
   <span class="n">acts_as_google_authenticated</span>
@@ -283,14 +283,14 @@ secret token used to generate the MFA code.</p>
 
 <p>If you want to authenticate based on a model called <code>User</code>, then you should name your session object <code>UserMfaSession</code>.</p>
 
-<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">user_mfa_session</span><span class="o">.</span><span class="n">rb</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/models/user_mfa_session.rb</span>
 
 <span class="k">class</span> <span class="nc">UserMfaSession</span> <span class="o">&lt;</span>  <span class="no">GoogleAuthenticatorRails</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Base</span>
   <span class="c1"># no real code needed here</span>
 <span class="k">end</span>
 </pre></div>
 
-<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">user_mfa_session_controller</span><span class="o">.</span><span class="n">rb</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/controllers/user_mfa_session_controller.rb</span>
 
 <span class="k">class</span> <span class="nc">UserMfaSessionController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
 
@@ -312,7 +312,7 @@ secret token used to generate the MFA code.</p>
 <span class="k">end</span>
 </pre></div>
 
-<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">application_controller</span><span class="o">.</span><span class="n">rb</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># app/controllers/application_controller.rb</span>
 
 <span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
   <span class="n">before_filter</span> <span class="ss">:check_mfa</span>
