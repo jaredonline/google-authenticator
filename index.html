@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Google Authenticator Rails by jaredonline</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Google Authenticator Rails</h1>
+        <h2>Ruby gem to implement Google&#39;s MFA authenticator</h2>
+        <a href="https://github.com/jaredonline/google-authenticator" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="googleauthenticatorrails" class="anchor" href="#googleauthenticatorrails"><span class="octicon octicon-link"></span></a>GoogleAuthenticatorRails</h1>
+
+<p><a href="http://badge.fury.io/rb/google-authenticator-rails"><img src="https://badge.fury.io/rb/google-authenticator-rails.png" alt="Gem Version"></a>
+<a href="http://travis-ci.org/jaredonline/google-authenticator"><img src="https://secure.travis-ci.org/jaredonline/google-authenticator.png" alt="Build Status"></a>
+<a href="https://codeclimate.com/github/jaredonline/google-authenticator"><img src="https://codeclimate.com/github/jaredonline/google-authenticator.png" alt="Code Climate"></a></p>
+
+<p>Rails (ActiveRecord) integration with the Google Authenticator apps for Android and the iPhone.  Uses the Authlogic style for cookie management.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Add this line to your application's Gemfile:</p>
+
+<pre><code>gem 'google-authenticator-rails'
+</code></pre>
+
+<p>And then execute:</p>
+
+<pre><code>$ bundle
+</code></pre>
+
+<p>Or install it yourself as:</p>
+
+<pre><code>$ gem install google-authenticator-rails
+</code></pre>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Example:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">User</span>
+  <span class="n">acts_as_google_authenticated</span>
+<span class="k">end</span>
+
+<span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">set_google_secret</span>           <span class="c1"># =&gt; true</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">google_qr_uri</span>               <span class="c1"># =&gt; http://path.to.google/qr?with=params</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">google_authentic?</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span> <span class="c1"># =&gt; true</span>
+</pre></div>
+
+<p>Google Labels
+When setting up an account with the GoogleAuthenticator you need to provide
+a label for that account (to distinguish it from other accounts).</p>
+
+<p>GoogleAuthenticatorRails allows you to customize how the record will create
+that label.  There are three options:</p>
+
+<ul>
+<li>The default just uses the column "email" on the model</li>
+<li>You can specify a custom column with the :column_name option</li>
+<li>You can specify a custom method via a symbol or a proc</li>
+</ul><p>Examples:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">User</span>
+  <span class="n">acts_as_google_authenticated</span> <span class="ss">:column</span> <span class="o">=&gt;</span> <span class="ss">:user_name</span>
+<span class="k">end</span>
+
+<span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:user_name</span> <span class="o">=&gt;</span> <span class="s2">"ted"</span><span class="p">)</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">google_label</span>                      <span class="c1"># =&gt; "ted"</span>
+
+<span class="k">class</span> <span class="nc">User</span>
+    <span class="n">acts_as_google_authenticated</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:user_name_with_label</span>
+
+    <span class="k">def</span> <span class="nf">user_name_with_label</span>
+      <span class="s2">"</span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@example.com"</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:user_name</span> <span class="o">=&gt;</span> <span class="s2">"ted"</span><span class="p">)</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">google_label</span>                    <span class="c1"># =&gt; "ted@example.com"</span>
+
+<span class="k">class</span> <span class="nc">User</span>
+    <span class="n">acts_as_google_authenticated</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="no">Proc</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">user</span><span class="o">|</span> <span class="n">user</span><span class="o">.</span><span class="n">user_name_with_label</span><span class="o">.</span><span class="n">upcase</span> <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">user_name_with_label</span>
+      <span class="s2">"</span><span class="si">#{</span><span class="n">user_name</span><span class="si">}</span><span class="s2">@example.com"</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="ss">:user_name</span> <span class="o">=&gt;</span> <span class="s2">"ted"</span><span class="p">)</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">google_label</span>                    <span class="c1"># =&gt; "TED@EXAMPLE.COM"</span>
+</pre></div>
+
+<p>You can also specify a column for storing the google secret.  The default is <code>google_secret</code>.</p>
+
+<p>Example</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">User</span>
+    <span class="n">acts_as_google_authenticated</span> <span class="ss">:google_secret_column</span> <span class="o">=&gt;</span> <span class="ss">:mfa_secret</span>
+<span class="k">end</span>
+
+<span class="vi">@user</span> <span class="o">=</span> <span class="no">User</span><span class="o">.</span><span class="n">new</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">set_google_secret</span>
+<span class="vi">@user</span><span class="o">.</span><span class="n">mfa_secret</span>         <span class="c1"># =&gt; "56ahi483"</span>
+</pre></div>
+
+<p>You can also specify which column the appropriate <code>MfaSession</code> subclass should use to look up the record:</p>
+
+<p>Example</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">User</span>
+  <span class="n">acts_as_google_authenticated</span> <span class="ss">:lookup_token</span> <span class="o">=&gt;</span> <span class="ss">:salt</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>The above will cause the <code>UserMfaSession</code> class to call <code>User.where(:salt =&gt; cookie_salt)</code> or <code>User.scoped(:conditions =&gt; { :salt =&gt; cookie_salt })</code> to find the appropriate record.</p>
+
+<p>You can also specify a name for the 'issuer' (the name of the website) where the user is using this token:</p>
+
+<p>Example</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">User</span>
+  <span class="n">acts_as_google_authenticated</span> <span class="ss">:issuer</span> <span class="o">=&gt;</span> <span class="s1">'your_site.com'</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>By this way your user will have the name of your site at the authenticator card besides the current token.</p>
+
+<h2>
+<a name="sample-rails-setup" class="anchor" href="#sample-rails-setup"><span class="octicon octicon-link"></span></a>Sample Rails Setup</h2>
+
+<p>This is a very rough outline of how GoogleAuthenticatorRails is meant to manage the sessions and cookies for a Rails app.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="no">Gemfile</span>
+
+<span class="n">gem</span> <span class="s1">'rails'</span>
+<span class="n">gem</span> <span class="s1">'google-authenticator-rails'</span>
+</pre></div>
+
+<p>First add a field to your user model to hold the Google token.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="k">class</span> <span class="nc">AddGoogleSecretToUser</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Migration</span>
+  <span class="k">def</span> <span class="nf">change</span>
+    <span class="n">add_column</span> <span class="ss">:users</span><span class="p">,</span> <span class="ss">:google_secret</span><span class="p">,</span> <span class="ss">:string</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">users</span><span class="o">.</span><span class="n">rb</span>
+
+<span class="k">class</span> <span class="nc">User</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">acts_as_google_authenticated</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>If you want to authenticate based on a model called <code>User</code>, then you should name your session object <code>UserMfaSession</code>.</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">models</span><span class="o">/</span><span class="n">user_mfa_session</span><span class="o">.</span><span class="n">rb</span>
+
+<span class="k">class</span> <span class="nc">UserMfaSession</span> <span class="o">&lt;</span>  <span class="no">GoogleAuthenticatorRails</span><span class="o">::</span><span class="no">Session</span><span class="o">::</span><span class="no">Base</span>
+  <span class="c1"># no real code needed here</span>
+<span class="k">end</span>
+</pre></div>
+
+<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">user_mfa_session_controller</span><span class="o">.</span><span class="n">rb</span>
+
+<span class="k">class</span> <span class="nc">UserMfaSessionController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+
+  <span class="k">def</span> <span class="nf">new</span>
+    <span class="c1"># load your view</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">create</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">current_user</span> <span class="c1"># grab your currently logged in user</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">google_authentic?</span><span class="p">(</span><span class="n">params</span><span class="o">[</span><span class="ss">:mfa_code</span><span class="o">]</span><span class="p">)</span>
+      <span class="no">UserMfaSession</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="n">root_path</span>
+    <span class="k">else</span>
+      <span class="n">flash</span><span class="o">[</span><span class="ss">:error</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"Wrong code"</span>
+      <span class="n">render</span> <span class="ss">:new</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+<span class="k">end</span>
+</pre></div>
+
+<div class="highlight highlight-ruby"><pre><span class="n">app</span><span class="o">/</span><span class="n">controllers</span><span class="o">/</span><span class="n">application_controller</span><span class="o">.</span><span class="n">rb</span>
+
+<span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">before_filter</span> <span class="ss">:check_mfa</span>
+
+  <span class="kp">private</span>
+  <span class="k">def</span> <span class="nf">check_mfa</span>
+     <span class="k">if</span> <span class="o">!</span><span class="p">(</span><span class="n">user_mfa_session</span> <span class="o">=</span> <span class="no">UserMfaSession</span><span class="o">.</span><span class="n">find</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">user_mfa_session</span> <span class="p">?</span> <span class="n">user_mfa_session</span><span class="o">.</span><span class="n">record</span> <span class="o">==</span> <span class="n">current_user</span> <span class="p">:</span> <span class="o">!</span><span class="n">user_mfa_session</span><span class="p">)</span>
+      <span class="n">redirect_to</span> <span class="n">new_user_mfa_session_path</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+<p>By default, the cookie related to the MfaSession expires in 24 hours, but this can be changed:</p>
+
+<div class="highlight highlight-ruby"><pre><span class="n">config</span><span class="o">/</span><span class="n">initializers</span><span class="o">/</span><span class="n">google_authenticator_rails</span><span class="o">.</span><span class="n">rb</span>
+
+<span class="no">GoogleAuthenticatorRails</span><span class="o">.</span><span class="n">time_until_expiration</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">month</span>
+</pre></div>
+
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/jaredonline/google-authenticator/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/jaredonline/google-authenticator/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/jaredonline/google-authenticator"></a> is maintained by <a href="https://github.com/jaredonline">jaredonline</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
