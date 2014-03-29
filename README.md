@@ -294,7 +294,7 @@ end
 By default, the cookie related to the MfaSession expires in 24 hours, but this can be changed:
 
 ```ruby
-config/initializers/google_authenticator_rails.rb
+# config/initializers/google_authenticator_rails.rb
 
 GoogleAuthenticatorRails.time_until_expiration = 1.month
 ```
