@@ -126,7 +126,7 @@ class UserMfaSession < GoogleAuthenticatorRails::Session::Base
 end
 ```
 
-### A note about cookie creation and `GoogleAuthenticatorRails::Session::Persistence::TokenNotFound`
+### A note about cookie creation and `Session::Persistence::TokenNotFound`
 
 `GoogleAuthenticatorRails` looks up the record based on the cookie created when you call `MfaSession#create`. The `#create` method looks into the record class (in our example, `User`) and looks at the configured `:lookup_token` option. It uses that option to save two pieces of information into the cookie, the `id` of the record and the token, which defaults to `persistence_token`. `persistence_token` is what Authlogic uses, which this gem was originally designed to work with.
 
