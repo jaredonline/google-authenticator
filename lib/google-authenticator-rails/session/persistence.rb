@@ -3,6 +3,16 @@ module GoogleAuthenticatorRails
     module Persistence
       class TokenNotFound < StandardError; end
 
+      class << self
+        def find_classes=(x)
+          @find_classes = Hash[ x.map { |kv| kv.map(&:to_s) } ]
+        end
+
+        def find_classes
+          @find_classes ||= {}
+        end
+      end
+
       def self.included(klass)
         klass.class_eval do
           extend  ClassMethods
@@ -12,10 +22,11 @@ module GoogleAuthenticatorRails
     end
 
     module ClassMethods
+
       def find
         cookie = controller.cookies[cookie_key]
         if cookie
-          token, user_id = parse_cookie(cookie).values_at(:token, :user_id)
+          token, user_id = parse_cookie(cookie).values_at(:token, column_name)
           conditions = { klass.google_lookup_token => token, :id => user_id }
           record = __send__(finder, conditions).first
           session = new(record)
@@ -32,6 +43,10 @@ module GoogleAuthenticatorRails
       end
 
       private
+      def column_name
+        "#{klass}_id".downcase.to_sym
+      end
+
       def finder
         @_finder ||= klass.public_methods.include?(:where) ? :rails_3_finder : :rails_2_finder
       end
@@ -45,7 +60,13 @@ module GoogleAuthenticatorRails
       end
 
       def klass
-        @_klass ||= "#{self.to_s.sub("MfaSession", "")}".constantize
+        @_klass ||= find_klass
+      end
+
+      def find_klass
+        "#{self.to_s.sub("MfaSession", "")}".constantize
+      rescue NameError
+        ::GoogleAuthenticatorRails::Session::Persistence.find_classes[self.to_s].constantize
       end
 
       def parse_cookie(cookie)
