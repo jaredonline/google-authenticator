@@ -40,8 +40,8 @@ end
 When setting up an account with `GoogleAuthenticatorRails` you need to provide a label for that account (to distinguish it from other accounts).
 
 `GoogleAuthenticatorRails` allows you to customize how the record will create that label.  There are three options:
-  - The default just uses the column "email" on the model
-  - You can specify a custom column with the :column_name option
+  - The default just uses the column `email` on the model
+  - You can specify a custom column with the `:column_name` option
   - You can specify a custom method via a symbol or a proc
 
 Example:
@@ -76,6 +76,10 @@ end
 @user = User.new(:user_name => "ted")
 @user.google_label                    # => "TED@EXAMPLE.COM"
 ```
+
+Here's what the labels look like in Google Authenticator for iPhone:
+
+![iPhone Label Screenshot](http://jaredonline.github.io/google-authenticator/images/gar-label.png)
 
 ## Google Secret
 The "google secret" is where `GoogleAuthenticatorRails` stores the
@@ -126,7 +130,7 @@ class UserMfaSession < GoogleAuthenticatorRails::Session::Base
 end
 ```
 
-### A note about cookie creation and `Session::Persistence::TokenNotFound`
+### A note about cookie creation and [[`Session::Persistence::TokenNotFound`]]
 
 `GoogleAuthenticatorRails` looks up the record based on the cookie created when you call `MfaSession#create`. The `#create` method looks into the record class (in our example, `User`) and looks at the configured `:lookup_token` option. It uses that option to save two pieces of information into the cookie, the `id` of the record and the token, which defaults to `persistence_token`. `persistence_token` is what Authlogic uses, which this gem was originally designed to work with.
 
@@ -300,3 +304,4 @@ GoogleAuthenticatorRails.time_until_expiration = 1.month
 ## License
 
 MIT.
+
