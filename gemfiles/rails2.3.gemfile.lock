@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    google-authenticator-rails (0.0.8)
+    google-authenticator-rails (0.0.9)
       actionpack
       activerecord (< 4.0.0)
       google-qr
