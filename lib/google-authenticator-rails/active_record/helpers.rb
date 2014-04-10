@@ -6,20 +6,8 @@ module GoogleAuthenticatorRails # :nodoc:
         save
       end
 
-      # TODO: Remove this method in version 0.0.4
-      def set_google_secret!
-        put "DEPRECATION WARNING: #set_google_secret! is no longer being used, use #set_google_secret instead. #set_google_secret! will be removed in 0.0.4. Called from #{Kernel.caller[0]}"
-        set_google_secret
-      end
-
       def google_authentic?(code)
         GoogleAuthenticatorRails.valid?(code, google_secret_value)
-      end
-
-      # TODO: Remove this method in version 0.0.4
-      def google_authenticate(code)
-        put "DEPRECATION WARNING: #google_authenticate is no longer being used, use #google_authentic? instead. #google_authenticate will be removed in 0.0.4. Called from #{Kernel.caller[0]}"
-        google_authentic?(code)
       end
 
       def google_qr_uri
