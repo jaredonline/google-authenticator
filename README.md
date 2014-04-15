@@ -160,7 +160,7 @@ class UserMfaSession < GoogleAuthenticatorRails::Session::Base
 end
 
 # app/controllers/mfa_session_controller.rb
-def class MfaSessionController < ApplicationController
+class MfaSessionController < ApplicationController
   def create
     UserMfaSession.create(user) # => Error: GoogleAuthenticatorRails::Session::Persistence::TokenNotFound
   end
