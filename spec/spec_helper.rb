@@ -101,6 +101,10 @@ class ColumnNameUser < BaseUser
   acts_as_google_authenticated :column_name => :user_name
 end
 
+class DriftUser < BaseUser
+  acts_as_google_authenticated :drift => 31
+end
+
 class ProcUser < BaseUser
   acts_as_google_authenticated :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
 end

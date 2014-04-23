@@ -37,17 +37,33 @@ describe GoogleAuthenticatorRails do
     GoogleAuthenticatorRails::generate_secret.should == random32
   end
 
-  context 'integration with ActiveRecord'  do
+  context 'integration with ActiveRecord' do
     let(:original_time) { Time.parse("2012-08-07 11:11:00 AM +0700") }
     let(:time)          { original_time }
+    let(:user)          { User.create(:email => "test@example.com", :user_name => "test_user") }
     before do
       Time.stub!(:now).and_return(time)
-      @user = User.create(:email => "test@example.com", :user_name => "test_user")
-      @user.google_secret = "test"
+      user.google_secret = "test"
+    end
+
+    context "custom drift" do
+      # 30 seconds drift
+      let(:user) { DriftUser.create(:email => "test@example.com", :user_name => "test_user") }
+      subject { user.google_authentic?(922511) }
+
+      context '6 seconds of drift' do
+        let(:time)  { original_time + 36.seconds }
+        it          { should be true }
+      end
+
+      context '30 seconds of drift' do
+        let(:time)  { original_time + 61.seconds }
+        it          { should be false }
+      end
     end
 
     context 'code validation' do
-      subject { @user.google_authentic?(922511) }
+      subject { user.google_authentic?(922511) }
 
       it { should be true }
 
@@ -63,8 +79,8 @@ describe GoogleAuthenticatorRails do
     end
 
     it 'creates a secret' do
-      @user.set_google_secret
-      @user.google_secret.should == random32
+      user.set_google_secret
+      user.google_secret.should == random32
     end
 
     context 'secret column' do
@@ -87,6 +103,14 @@ describe GoogleAuthenticatorRails do
       let(:user)    { NilMethodUser.create(:email => "test@example.com", :user_name => "test_user") }
       subject       { lambda { user.google_label } }
       it            { should raise_error(NoMethodError) }
+    end
+
+    context "drift value" do
+      it { DriftUser.google_drift.should == 31 }
+
+      context "default value" do
+        it { User.google_drift.should == 6 }
+      end
     end
 
     context 'qr codes' do

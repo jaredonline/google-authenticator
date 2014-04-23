@@ -99,6 +99,17 @@ end
 @user.mfa_secret 		 # => "56ahi483"
 ```
 
+## Drift
+
+You can specify a custom drift value. Drift is the number of seconds that the client
+and server are allowed to drift apart. Default value is 5 seconds.
+
+```ruby
+class User
+  act_as_google_authenticated :drift => 31
+end
+```
+
 ## Lookup Token
 
 You can also specify which column the appropriate `MfaSession` subclass should use to look up the record:
@@ -255,7 +266,7 @@ end
 # app/controllers/user_mfa_session_controller.rb
 
 class UserMfaSessionController < ApplicationController
-  
+
   def new
     # load your view
   end
