@@ -7,7 +7,7 @@ module GoogleAuthenticatorRails # :nodoc:
       end
 
       def google_authentic?(code)
-        GoogleAuthenticatorRails.valid?(code, google_secret_value)
+        GoogleAuthenticatorRails.valid?(code, google_secret_value, self.class.google_drift)
       end
 
       def google_qr_uri

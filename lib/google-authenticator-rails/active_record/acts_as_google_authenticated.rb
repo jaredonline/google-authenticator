@@ -77,6 +77,9 @@ module GoogleAuthenticatorRails # :nodoc:
         #                           to "google_secret"
         #   [:lookup_token] the column to use to find the record from the DB, defaults
         #                   to "persistence_token"
+        #   [:drift] drift the number of seconds that the client and server are
+        #            allowed to drift apart. Default value is 6.
+        #
         #   [:issuer] the name of the issuer to appear in the app (optional), defaults
         #             to ""
         def acts_as_google_authenticated(options = {})
@@ -84,11 +87,12 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_label_method  = options[:method]                || :default_google_label_method
           @google_secret_column = options[:google_secret_column]  || :google_secret
           @google_lookup_token  = options[:lookup_token]          || :persistence_token
+          @google_drift         = options[:drift]                 || GoogleAuthenticatorRails::DRIFT
           @google_issuer        = options[:issuer]
 
           puts ":skip_attr_accessible is no longer required.  Called from #{Kernel.caller[0]}}" if options.has_key?(:skip_attr_accessible)
 
-          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_issuer].each do |cattr|
+          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_drift, :google_issuer].each do |cattr|
             self.singleton_class.class_eval { attr_reader cattr }
           end
 
