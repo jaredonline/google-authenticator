@@ -74,8 +74,6 @@ ActiveRecord::Schema.define do
 end
 
 class BaseUser < ActiveRecord::Base
-  attr_accessible :email, :user_name, :password
-
   self.table_name = "users"
 
   before_save do |user|
