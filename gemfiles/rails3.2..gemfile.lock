@@ -1,9 +1,9 @@
 PATH
   remote: ../
   specs:
-    google-authenticator-rails (0.0.9)
+    google-authenticator-rails (0.0.11)
       actionpack
-      activerecord (< 4.0.0)
+      activerecord
       google-qr
       rotp (= 1.6.1)
 
@@ -58,7 +58,7 @@ GEM
     rspec-expectations (2.8.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.8.0)
-    sprockets (2.2.2)
+    sprockets (2.2.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)

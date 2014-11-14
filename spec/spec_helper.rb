@@ -74,7 +74,13 @@ ActiveRecord::Schema.define do
 end
 
 class BaseUser < ActiveRecord::Base
-  attr_accessible :email, :user_name, :password
+  # Older versions of ActiveRecord allow attr_accessible, but newer
+  # ones do not
+  begin
+    attr_accessible :email, :user_name, :password
+  rescue
+    attr_accessor :email, :user_name, :password
+  end
 
   self.table_name = "users"
 
