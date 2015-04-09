@@ -114,7 +114,7 @@ describe GoogleAuthenticatorRails do
     end
 
     context 'qr codes' do
-      let(:options) { { :email => "test@example.com", :user_name => "test_user" } }
+      let(:options) { { :email => "test@example.com", :user_name => "test_user"} }
       let(:user)  { User.create options }
       before      { user.set_google_secret }
       subject     { user.google_qr_uri }
@@ -140,6 +140,15 @@ describe GoogleAuthenticatorRails do
         let(:user) { StringUser.create options }
         it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fsecret%3D5qlcip7azyjuwm36&chs=200x200" }
       end
+    end
+
+    context 'qr codes with different size' do
+      let(:options) { { :email => "test@example.com", :user_name => "test_user", :img_size => "100x100" } }
+      let(:user)  { User.create options }
+      before      { user.set_google_secret }
+      subject     { user.google_qr_uri }
+
+      it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fsecret%3D5qlcip7azyjuwm36&chs=100x100" }
     end
 
   end
