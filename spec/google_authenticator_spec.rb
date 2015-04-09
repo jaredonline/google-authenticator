@@ -142,7 +142,7 @@ describe GoogleAuthenticatorRails do
       end
     end
 
-    context 'qr codes with different size' do
+    context 'qr codes image with different size' do
       let(:options) { { :email => "test@example.com", :user_name => "test_user" } }
       let(:user)  { ImgSizeUser.create options }
       before      { user.set_google_secret }
