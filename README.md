@@ -312,9 +312,12 @@ GoogleAuthenticatorRails.time_until_expiration = 1.month
 
 
 By default, the QR image size is 200x200, use this setting instead of use HTML, to get the QR image more clear:
+
+Example
+
 ```ruby
 class User
-  acts_as_google_authenticated :img_size => '100x100'
+  acts_as_google_authenticated  :img_size => '100x100'
 end
 ```
 
