@@ -31,6 +31,10 @@ module GoogleAuthenticatorRails
         new(user)
       end
 
+      def destroy
+        controller.cookies.delete cookie_key
+      end
+
       private
       def finder
         @_finder ||= klass.public_methods.include?(:where) ? :rails_3_finder : :rails_2_finder
