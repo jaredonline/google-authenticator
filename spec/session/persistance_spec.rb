@@ -30,6 +30,14 @@ describe GoogleAuthenticatorRails::Session::Base do
           it           { should be_a SaltUserMfaSession }
           its(:record) { should eq user }
         end
+
+        context 'after destroy' do
+          before { UserMfaSession.destroy }
+
+          subject { UserMfaSession.find }
+
+          it { should be_nil }
+        end
       end
     end
 
