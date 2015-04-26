@@ -310,6 +310,13 @@ By default, the cookie related to the MfaSession expires in 24 hours, but this c
 GoogleAuthenticatorRails.time_until_expiration = 1.month
 ```
 
+## Destroying the Cookie
+
+If you want to manually destroy the MFA cookie (for example, when a user logs out), just call
+
+```ruby
+UserMfaSession::destroy
+```
 
 ## Contributing
 
