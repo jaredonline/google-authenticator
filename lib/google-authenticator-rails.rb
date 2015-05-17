@@ -1,4 +1,4 @@
-# Stuff the gem requireds
+# Stuff the gem requires
 #
 require 'active_support'
 require 'active_record'
@@ -20,14 +20,20 @@ GOOGLE_AUTHENTICATOR_RAILS_PATH = File.dirname(__FILE__) + "/google-authenticato
    require GOOGLE_AUTHENTICATOR_RAILS_PATH + library
  end
 
- # Sets up some basic accessors for use with the ROTP module
+# Sets up some basic accessors for use with the ROTP module
 #
 module GoogleAuthenticatorRails
-  # Drift is set to 6 because ROTP drift is not inclusive.  This allows a drift of 5 seconds.
+  # Drift is set to 6 because ROTP drift is not inclusive. This allows a drift of 5 seconds.
   DRIFT = 6
 
   # How long a Session::Persistence cookie should last.
   @@time_until_expiration = 24.hours
+
+  # Name of a Session::Persistence cookie
+  @@cookie_key = nil
+
+  # Additional configuration passed to a Session::Persistence cookie.
+  @@cookie_options = { :httponly => true }
 
   def self.generate_password(secret, iteration)
     ROTP::HOTP.new(secret).at(iteration)
@@ -51,5 +57,21 @@ module GoogleAuthenticatorRails
 
   def self.time_until_expiration=(time_until_expiration)
     @@time_until_expiration = time_until_expiration
+  end
+
+  def self.cookie_key
+    @@cookie_key
+  end
+
+  def self.cookie_key=(key)
+    @@cookie_key = key
+  end
+
+  def self.cookie_options
+    @@cookie_options
+  end
+
+  def self.cookie_options=(options)
+    @@cookie_options = options
   end
 end
