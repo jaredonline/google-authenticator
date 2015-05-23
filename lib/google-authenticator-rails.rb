@@ -29,8 +29,8 @@ module GoogleAuthenticatorRails
   # How long a Session::Persistence cookie should last.
   @@time_until_expiration = 24.hours
 
-  # Name of a Session::Persistence cookie
-  @@cookie_key = nil
+  # Last part of a Session::Persistence cookie's key
+  @@cookie_key_suffix = nil
 
   # Additional configuration passed to a Session::Persistence cookie.
   @@cookie_options = { :httponly => true }
@@ -59,12 +59,12 @@ module GoogleAuthenticatorRails
     @@time_until_expiration = time_until_expiration
   end
 
-  def self.cookie_key
-    @@cookie_key
+  def self.cookie_key_suffix
+    @@cookie_key_suffix
   end
 
-  def self.cookie_key=(key)
-    @@cookie_key = key
+  def self.cookie_key_suffix=(suffix)
+    @@cookie_key_suffix = suffix
   end
 
   def self.cookie_options
