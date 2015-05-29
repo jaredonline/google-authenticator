@@ -59,14 +59,16 @@ module GoogleAuthenticatorRails
 
       def create_cookie(token, user_id)
         value = [token, user_id].join('::')
-        {
+        options = GoogleAuthenticatorRails.cookie_options || {}
+        options.merge(
           :value    => value,
           :expires  => GoogleAuthenticatorRails.time_until_expiration.from_now
-        }
+        )
       end
 
       def cookie_key
-        "#{klass.to_s.downcase}_mfa_credentials"
+        suffix = "#{GoogleAuthenticatorRails.cookie_key_suffix}" || 'mfa_credentials'
+        "#{klass.to_s.downcase}_#{suffix}"
       end
     end
 
