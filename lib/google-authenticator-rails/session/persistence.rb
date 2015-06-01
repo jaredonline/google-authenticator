@@ -67,7 +67,7 @@ module GoogleAuthenticatorRails
       end
 
       def cookie_key
-        suffix = "#{GoogleAuthenticatorRails.cookie_key_suffix}" || 'mfa_credentials'
+        suffix = GoogleAuthenticatorRails.cookie_key_suffix || 'mfa_credentials'
         "#{klass.to_s.downcase}_#{suffix}"
       end
     end
