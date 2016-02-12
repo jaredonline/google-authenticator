@@ -22,6 +22,10 @@ module GoogleAuthenticatorRails # :nodoc:
         RQRCode::QRCode.new(ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => size).as_svg
       end
 
+      def qr_code_html(size=12)
+        RQRCode::QRCode.new(ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => size).as_html
+      end
+
       def google_label
         method = self.class.google_label_method
         case method
