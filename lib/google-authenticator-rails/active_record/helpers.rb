@@ -11,7 +11,7 @@ module GoogleAuthenticatorRails # :nodoc:
       end
 
       def google_qr_uri
-        GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label), :size => "200x200").to_s
+        GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => "200x200").to_s
       end
 
       def google_label
