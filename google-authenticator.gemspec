@@ -25,6 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "activerecord"
   gem.add_dependency "google-qr"
   gem.add_dependency "actionpack"
+  gem.add_dependency "rqrcode"
 
   gem.add_development_dependency "rspec",     "~> 2.8.0"
   gem.add_development_dependency "appraisal", "~> 0.5.1"
