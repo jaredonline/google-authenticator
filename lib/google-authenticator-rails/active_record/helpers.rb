@@ -14,16 +14,9 @@ module GoogleAuthenticatorRails # :nodoc:
         GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => "#{w}x#{h}").to_s
       end
 
-      def qr_code_png(size=12)
-        RQRCode::QRCode.new(ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => size).as_png
-      end
-
-      def qr_code_svg(size=12)
-        RQRCode::QRCode.new(ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => size).as_svg
-      end
-
-      def qr_code_html(size=12)
-        RQRCode::QRCode.new(ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s), :size => size).as_html
+      def qr_code_png(size=200)
+       qrcode = RQRCode::QRCode.new(ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label.to_s))
+       qrcode.as_png(resize_gte_to: false, resize_exactly_to: false, fill: 'white', color: 'black', size: size, border_modules: 4, module_px_size: 6, file: nil)
       end
 
       def google_label
