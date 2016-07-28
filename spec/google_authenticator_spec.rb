@@ -21,7 +21,7 @@ describe GoogleAuthenticatorRails do
   end
 
   context 'time-based passwords' do
-    let(:time)    { Time.parse("2012-08-07 11:11:11 AM +0700") }
+    let!(:time)   { Time.parse("2012-08-07 11:11:11 AM +0700") }
     let(:secret)  { "test" }
     let(:code)    { 922511 }
     before        { Time.stub!(:now).and_return(time) }
@@ -39,7 +39,7 @@ describe GoogleAuthenticatorRails do
 
   context 'integration with ActiveRecord' do
     let(:original_time) { Time.parse("2012-08-07 11:11:00 AM +0700") }
-    let(:time)          { original_time }
+    let!(:time)         { original_time }
     let(:user)          { User.create(:email => "test@example.com", :user_name => "test_user") }
     before do
       Time.stub!(:now).and_return(time)
