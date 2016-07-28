@@ -5,7 +5,10 @@
 .yardoc
 .rvmrc
 .rspec
+.ruby-gemset
+.ruby-version
 Gemfile.lock
+gemfiles/*.lock
 InstalledFiles
 _yardoc
 coverage
