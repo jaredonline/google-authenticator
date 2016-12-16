@@ -82,6 +82,7 @@ module GoogleAuthenticatorRails # :nodoc:
         #
         #   [:issuer] the name of the issuer to appear in the app (optional), defaults
         #             to ""
+        #   [:img_size] size of the QR image
         def acts_as_google_authenticated(options = {})
           @google_label_column  = options[:column_name]           || :email
           @google_label_method  = options[:method]                || :default_google_label_method
@@ -89,10 +90,11 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_lookup_token  = options[:lookup_token]          || :persistence_token
           @google_drift         = options[:drift]                 || GoogleAuthenticatorRails::DRIFT
           @google_issuer        = options[:issuer]
+          @google_img_size      = options[:img_size]              || "200x200"
 
           puts ":skip_attr_accessible is no longer required.  Called from #{Kernel.caller[0]}}" if options.has_key?(:skip_attr_accessible)
 
-          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_drift, :google_issuer].each do |cattr|
+          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_drift, :google_issuer, :google_img_size].each do |cattr|
             self.singleton_class.class_eval { attr_reader cattr }
           end
 

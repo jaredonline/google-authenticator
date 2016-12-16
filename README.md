@@ -327,6 +327,17 @@ If you want to manually destroy the MFA cookie (for example, when a user logs ou
 UserMfaSession::destroy
 ```
 
+By default, the QR image size is 200x200, use this setting instead of use HTML, to get the QR image more clear:
+
+Example
+
+```ruby
+class User
+  acts_as_google_authenticated  :img_size => '100x100'
+end
+```
+
+
 ## Contributing
 
 1. Fork it
