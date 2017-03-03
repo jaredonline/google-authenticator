@@ -128,3 +128,7 @@ class SaltUserMfaSession < GoogleAuthenticatorRails::Session::Base; end
 class SaltUser < BaseUser
   acts_as_google_authenticated :lookup_token => :salt
 end
+
+class QrCodeUser < BaseUser
+  acts_as_google_authenticated :qr_size => '300x300', :method => :email
+end
