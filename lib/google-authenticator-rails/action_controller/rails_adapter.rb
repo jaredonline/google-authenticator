@@ -34,6 +34,9 @@ module GoogleAuthenticatorRails
   end
 end
 
-if defined?(ActionController::API)
+if defined?(ActionController::Base)
+  ActionController::Base.send(:include, GoogleAuthenticatorRails::ActionController::Integration)
+elsif defined?(ActionController::API)
   ActionController::API.send(:include, GoogleAuthenticatorRails::ActionController::Integration)
 end
+  
