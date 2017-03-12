@@ -10,8 +10,8 @@ module GoogleAuthenticatorRails # :nodoc:
         GoogleAuthenticatorRails.valid?(code, google_secret_value, self.class.google_drift)
       end
 
-      def google_qr_uri
-        GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label), :size => "200x200").to_s
+      def google_qr_uri(size = nil)
+        GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label), :size => size || self.class.google_qr_size).to_s
       end
 
       def google_label
