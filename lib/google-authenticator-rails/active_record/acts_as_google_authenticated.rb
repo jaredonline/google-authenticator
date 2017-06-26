@@ -82,7 +82,7 @@ module GoogleAuthenticatorRails # :nodoc:
         #
         #   [:issuer] the name of the issuer to appear in the app (optional), defaults
         #             to ""
-        #   [:img_size] size of the QR image
+        #   [:img_size] size of the QR  image
         def acts_as_google_authenticated(options = {})
           @google_label_column  = options[:column_name]           || :email
           @google_label_method  = options[:method]                || :default_google_label_method
