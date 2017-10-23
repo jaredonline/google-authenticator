@@ -23,6 +23,12 @@ GOOGLE_AUTHENTICATOR_RAILS_PATH = File.dirname(__FILE__) + "/google-authenticato
 # Sets up some basic accessors for use with the ROTP module
 #
 module GoogleAuthenticatorRails
+  class Railtie < Rails::Railtie
+    rake_tasks do
+      load 'tasks/google_authenticator.rake'
+    end
+  end
+    
   # Drift is set to 6 because ROTP drift is not inclusive. This allows a drift of 5 seconds.
   DRIFT = 6
 

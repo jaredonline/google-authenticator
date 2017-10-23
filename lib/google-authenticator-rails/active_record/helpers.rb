@@ -1,13 +1,13 @@
 module GoogleAuthenticatorRails # :nodoc:
+  mattr_accessor :secret_encryptor
   module ActiveRecord  # :nodoc:
     module Helpers
       def set_google_secret
-        self.__send__("#{self.class.google_secret_column}=", GoogleAuthenticatorRails::generate_secret)
-        save
+        change_google_secret_to!(GoogleAuthenticatorRails::generate_secret)
       end
 
       def google_authentic?(code)
-        GoogleAuthenticatorRails.valid?(code, google_secret_value, self.class.google_drift)
+        GoogleAuthenticatorRails.valid?(code, google_secret_value_plain, self.class.google_drift)
       end
 
       def google_qr_uri(size = nil)
@@ -29,18 +29,41 @@ module GoogleAuthenticatorRails # :nodoc:
       def google_token_value
         self.__send__(self.class.google_lookup_token)
       end
+      
+      def encrypt_google_secret!
+        change_google_secret_to!(google_secret_value)
+      end
 
       private
       def default_google_label_method
         self.__send__(self.class.google_label_column)
       end
-
+      
       def google_secret_value
         self.__send__(self.class.google_secret_column)
       end
 
+      def google_secret_value_plain
+        google_secret = google_secret_value
+        google_secret && self.class.google_secret_encrypted ? google_secret_encryptor.decrypt_and_verify(google_secret) : google_secret
+      end
+      
+      def change_google_secret_to!(secret, encrypt = self.class.google_secret_encrypted)
+        secret = google_secret_encryptor.encrypt_and_sign(secret) if encrypt
+        self.__send__("#{self.class.google_secret_column}=", secret)
+        save!
+      end
+
       def google_issuer
         self.class.google_issuer
+      end
+      
+      def google_secret_encryptor
+        GoogleAuthenticatorRails.secret_encryptor ||= GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
+      end
+      
+      def self.get_google_secret_encryptor
+        ActiveSupport::MessageEncryptor.new(Rails.application.key_generator.generate_key('Google-secret encryption key', 32))
       end
     end
   end
