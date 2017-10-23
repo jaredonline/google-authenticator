@@ -335,7 +335,7 @@ than the database (by, for example, never putting it on the server filesystem), 
 be gained by setting the ```:encrypt_secret``` option to ```true```. Newly-created secrets will then be stored in encrypted
 form.
 
-Existing non-encrypted secrets for all models for which the ```:encrypt_secret``` option to has been set to ```true``
+Existing non-encrypted secrets for all models for which the ```:encrypt_secret``` option to has been set to ```true```
 can be encrypted by running
 ```bash
   rails google_authenticator:encrypt_secrets
@@ -344,14 +344,15 @@ This may be reversed by running
 ```bash
   rails google_authenticator:decrypt_secrets
 ```
-then removing, or setting ```false``, the ```:encrypt_secret``` option.
+then removing, or setting ```false```, the ```:encrypt_secret``` option.
 
-If ```secret_key_base``` needs to change, set ```old_secret_key_base`` to the old key in ```config/secrets.yml``` before generating the new key.
+If ```secret_key_base``` needs to change, set ```old_secret_key_base``` to the old key in ```config/secrets.yml``` before generating the new key.
 Then run
-``bash
+```bash
   rails google_authenticator:reencrypt_secrets
 ```
 to change all encrypted google secret fields to use the new key.
+
 
 ## Contributing
 
