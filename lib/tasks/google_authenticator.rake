@@ -6,7 +6,7 @@ namespace :google_authenticator do
       # Adapted from https://stackoverflow.com/a/8248849/7478194
       Dir[Rails.root.join('app/models/*.rb').to_s].each do |filename|
         klass = File.basename(filename, '.rb').camelize.constantize
-        next unless klass.ancestors.include?(ActiveRecord::Base) && klass.try(:google_secret_encrypted)
+        next unless klass.ancestors.include?(ActiveRecord::Base) && klass.try(:google_secrets_encrypted)
         puts "#{op_name} model #{klass.name.inspect} (table #{klass.table_name.inspect})"
         klass.where("LENGTH(#{klass.google_secret_column})#{match_op}").find_each do |record|
           yield record

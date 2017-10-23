@@ -95,11 +95,11 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_drift             = options[:drift]                 || GoogleAuthenticatorRails::DRIFT
           @google_issuer            = options[:issuer]
           @google_qr_size           = options[:qr_size]               || '200x200'
-          @google_secret_encrypted  = !!options[:encrypt_secret]
+          @google_secrets_encrypted = !!options[:encrypt_secrets]
 
           puts ":skip_attr_accessible is no longer required.  Called from #{Kernel.caller[0]}}" if options.has_key?(:skip_attr_accessible)
 
-          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_drift, :google_issuer, :google_qr_size, :google_secret_encrypted].each do |cattr|
+          [:google_label_column, :google_label_method, :google_secret_column, :google_lookup_token, :google_drift, :google_issuer, :google_qr_size, :google_secrets_encrypted].each do |cattr|
             self.singleton_class.class_eval { attr_reader cattr }
           end
 

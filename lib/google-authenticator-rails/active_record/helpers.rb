@@ -45,10 +45,10 @@ module GoogleAuthenticatorRails # :nodoc:
 
       def google_secret_value_plain
         google_secret = google_secret_value
-        google_secret && self.class.google_secret_encrypted ? google_secret_encryptor.decrypt_and_verify(google_secret) : google_secret
+        google_secret && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(google_secret) : google_secret
       end
       
-      def change_google_secret_to!(secret, encrypt = self.class.google_secret_encrypted)
+      def change_google_secret_to!(secret, encrypt = self.class.google_secrets_encrypted)
         secret = google_secret_encryptor.encrypt_and_sign(secret) if encrypt
         self.__send__("#{self.class.google_secret_column}=", secret)
         save!
