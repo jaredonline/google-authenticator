@@ -1,5 +1,6 @@
 # Stuff the gem requires
 #
+require 'rails'
 require 'active_support'
 require 'active_record'
 require 'openssl'
