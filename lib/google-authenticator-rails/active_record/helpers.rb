@@ -55,7 +55,7 @@ module GoogleAuthenticatorRails # :nodoc:
 
       def change_google_secret_to!(secret, encrypt = self.class.google_secrets_encrypted)
         @google_secret_value = secret
-        self.__send__("#{self.class.google_secret_column}=", encrypt ? google_secret_encryptor.encrypt_and_sign(secret) : secret)
+        self.__send__("#{self.class.google_secret_column}=", secret && encrypt ? google_secret_encryptor.encrypt_and_sign(secret) : secret)
         @google_secret_value_cached = true
         save!
       end
