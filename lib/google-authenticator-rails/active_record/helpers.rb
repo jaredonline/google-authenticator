@@ -2,12 +2,22 @@ module GoogleAuthenticatorRails # :nodoc:
   mattr_accessor :secret_encryptor
   module ActiveRecord  # :nodoc:
     module Helpers
+      def google_secret_value
+        if @google_secret_value_cached
+          @google_secret_value
+        else
+          @google_secret_value_cached = true
+          secret_in_db = google_secret_column_value
+          @google_secret_value = secret_in_db && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(secret_in_db) : secret_in_db
+        end
+      end
+      
       def set_google_secret
         change_google_secret_to!(GoogleAuthenticatorRails::generate_secret)
       end
 
       def google_authentic?(code)
-        GoogleAuthenticatorRails.valid?(code, google_secret_value_plain, self.class.google_drift)
+        GoogleAuthenticatorRails.valid?(code, google_secret_value, self.class.google_drift)
       end
 
       def google_qr_uri(size = nil)
@@ -31,7 +41,7 @@ module GoogleAuthenticatorRails # :nodoc:
       end
       
       def encrypt_google_secret!
-        change_google_secret_to!(google_secret_value)
+        change_google_secret_to!(google_secret_column_value)
       end
 
       private
@@ -39,18 +49,14 @@ module GoogleAuthenticatorRails # :nodoc:
         self.__send__(self.class.google_label_column)
       end
       
-      def google_secret_value
+      def google_secret_column_value
         self.__send__(self.class.google_secret_column)
       end
 
-      def google_secret_value_plain
-        google_secret = google_secret_value
-        google_secret && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(google_secret) : google_secret
-      end
-      
       def change_google_secret_to!(secret, encrypt = self.class.google_secrets_encrypted)
-        secret = google_secret_encryptor.encrypt_and_sign(secret) if encrypt
-        self.__send__("#{self.class.google_secret_column}=", secret)
+        @google_secret_value = secret
+        self.__send__("#{self.class.google_secret_column}=", encrypt ? google_secret_encryptor.encrypt_and_sign(secret) : secret)
+        @google_secret_value_cached = true
         save!
       end
 

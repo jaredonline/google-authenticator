@@ -31,7 +31,7 @@ namespace :google_authenticator do
       old_secret_encryptor = GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
       do_encrypt(true, 'Re-encrypting') do |record|
         GoogleAuthenticatorRails.secret_encryptor = old_secret_encryptor
-        plain_secret = record.send(:google_secret_value_plain)
+        plain_secret = record.google_secret_value
         GoogleAuthenticatorRails.secret_encryptor = secret_encryptor
         record.send(:change_google_secret_to!, plain_secret)
       end
@@ -40,7 +40,7 @@ namespace :google_authenticator do
   
   desc 'Decrypt all secret columns (remove the :encrypt_secret options *after* running)'
   task decrypt_secrets: :environment do
-    do_encrypt(true, 'Decrypting') { |record| record.send(:change_google_secret_to!, record.send(:google_secret_value_plain), false) }
+    do_encrypt(true, 'Decrypting') { |record| record.send(:change_google_secret_to!, record.google_secret_value, false) }
   end  
 
 end
