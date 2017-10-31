@@ -1,9 +1,19 @@
 module GoogleAuthenticatorRails # :nodoc:
+  mattr_accessor :secret_encryptor
   module ActiveRecord  # :nodoc:
     module Helpers
+      def google_secret_value
+        if @google_secret_value_cached
+          @google_secret_value
+        else
+          @google_secret_value_cached = true
+          secret_in_db = google_secret_column_value
+          @google_secret_value = secret_in_db && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(secret_in_db) : secret_in_db
+        end
+      end
+      
       def set_google_secret
-        self.__send__("#{self.class.google_secret_column}=", GoogleAuthenticatorRails::generate_secret)
-        save
+        change_google_secret_to!(GoogleAuthenticatorRails::generate_secret)
       end
 
       def google_authentic?(code)
@@ -29,18 +39,37 @@ module GoogleAuthenticatorRails # :nodoc:
       def google_token_value
         self.__send__(self.class.google_lookup_token)
       end
+      
+      def encrypt_google_secret!
+        change_google_secret_to!(google_secret_column_value)
+      end
 
       private
       def default_google_label_method
         self.__send__(self.class.google_label_column)
       end
-
-      def google_secret_value
+      
+      def google_secret_column_value
         self.__send__(self.class.google_secret_column)
+      end
+
+      def change_google_secret_to!(secret, encrypt = self.class.google_secrets_encrypted)
+        @google_secret_value = secret
+        self.__send__("#{self.class.google_secret_column}=", secret && encrypt ? google_secret_encryptor.encrypt_and_sign(secret) : secret)
+        @google_secret_value_cached = true
+        save!
       end
 
       def google_issuer
         self.class.google_issuer
+      end
+      
+      def google_secret_encryptor
+        GoogleAuthenticatorRails.secret_encryptor ||= GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
+      end
+      
+      def self.get_google_secret_encryptor
+        ActiveSupport::MessageEncryptor.new(Rails.application.key_generator.generate_key('Google-secret encryption key', 32))
       end
     end
   end

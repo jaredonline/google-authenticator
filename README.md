@@ -327,6 +327,33 @@ If you want to manually destroy the MFA cookie (for example, when a user logs ou
 UserMfaSession::destroy
 ```
 
+## Storing Secrets in Encrypted Form
+
+Normally, if an attacker gets access to the application database, they will be able to generate correct authentication codes,
+elmininating the security gains from two-factor authentication. If the application's ```secret_key_base``` is handled more securely
+than the database (by, for example, never putting it on the server filesystem), protection against database compromise can
+be gained by setting the ```:encrypt_secrets``` option to ```true```. Newly-created secrets will then be stored in encrypted
+form.
+
+Existing non-encrypted secrets for all models for which the ```:encrypt_secrets``` option has been set to ```true```
+can be encrypted by running
+```bash
+  rails google_authenticator:encrypt_secrets
+```
+This may be reversed by running
+```bash
+  rails google_authenticator:decrypt_secrets
+```
+then by removing, or setting ```false```, the ```:encrypt_secrets``` option.
+
+If ```secret_key_base``` needs to change, set ```old_secret_key_base``` to the old key in ```config/secrets.yml``` before generating the new key.
+Then run
+```bash
+  rails google_authenticator:reencrypt_secrets
+```
+to change all encrypted google secret fields to use the new key.
+
+
 ## Contributing
 
 1. Fork it
