@@ -34,6 +34,8 @@ end
 @user.google_secret_value         # => 16-character plain-text secret, whatever the name of the secret column
 @user.google_qr_uri               # => http://path.to.google/qr?with=params
 @user.google_authentic?(123456)   # => true
+@user.clear_google_secret!        # => true
+@user.google_secret_value         # => nil
 ```
 
 ## Google Labels

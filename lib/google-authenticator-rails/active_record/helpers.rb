@@ -21,6 +21,12 @@ module GoogleAuthenticatorRails # :nodoc:
         change_google_secret_to!(GoogleAuthenticatorRails::generate_secret)
       end
 
+      # Sets and saves a nil google secret value for this instance.
+      #
+      def clear_google_secret!
+        change_google_secret_to!(nil)
+      end
+
       def google_authentic?(code)
         GoogleAuthenticatorRails.valid?(code, google_secret_value, self.class.google_drift)
       end

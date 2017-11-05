@@ -40,6 +40,7 @@ describe GoogleAuthenticatorRails do
       let(:user) { UserFactory.create User }
 
       before do
+        @user = user
         user.google_secret = secret
       end
   
@@ -80,6 +81,15 @@ describe GoogleAuthenticatorRails do
         user.google_secret.should == secret
       end
       
+      shared_examples 'handles nil secrets' do
+        it 'clears a secret' do
+          @user.clear_google_secret!
+          @user.google_secret_value.should(be_nil) && @user.reload.google_secret_value.should(be_nil)
+        end
+      end
+
+      it_behaves_like 'handles nil secrets'
+
       context 'encrypted column' do
         before do
           @user = UserFactory.create EncryptedUser
@@ -97,6 +107,8 @@ describe GoogleAuthenticatorRails do
         it 'validates code' do
           @user.google_authentic?(code).should be_true
         end
+
+        it_behaves_like 'handles nil secrets'
       end
   
       context 'custom secret column' do
@@ -150,7 +162,8 @@ describe GoogleAuthenticatorRails do
           end  
             
           def encryption_ok?(user, secret_should_be_encrypted)
-            user.reload.send(:google_secret_column_value).length.should == (secret_should_be_encrypted ? 138 : 16) &&
+            secret_value = user.reload.send(:google_secret_column_value)
+            (secret_value.blank? || secret_value.length.should == (secret_should_be_encrypted ? 138 : 16)) &&
             (user.class.google_secrets_encrypted ^ secret_should_be_encrypted || user.google_secret_value == secret)
           end
   
