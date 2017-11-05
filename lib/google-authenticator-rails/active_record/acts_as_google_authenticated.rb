@@ -101,7 +101,7 @@ module GoogleAuthenticatorRails # :nodoc:
           if @google_secrets_encrypted && !@shown_encryption_warning && !GoogleAuthenticatorRails.encryption_supported?
             msg = 'Google secret encryption is only supported on Ruby on Rails 4.1 and above. Encryption has been disabled.'
             if defined?(Rails) && !Rails.env.test?
-              Rails.logger.warning msg
+              Rails.logger.warn msg
             else
               puts msg
             end 
