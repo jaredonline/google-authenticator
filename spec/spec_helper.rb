@@ -1,4 +1,7 @@
+ENV['RAILS_ENV'] = 'test'
+
 require 'time'
+require 'rails'
 require 'active_record'
 require 'action_controller'
 require 'rotp'
@@ -132,3 +135,21 @@ end
 class QrCodeUser < BaseUser
   acts_as_google_authenticated :qr_size => '300x300', :method => :email
 end
+
+class EncryptedUser < BaseUser
+  acts_as_google_authenticated :encrypt_secrets => true
+end
+
+class EncryptedCustomUser < BaseUser
+  self.table_name = 'custom_users'
+  acts_as_google_authenticated :encrypt_secrets => true, :google_secret_column => :mfa_secret
+end
+
+class UserFactory
+  def self.create(klass)
+    klass.create(:email => 'test@example.com', :user_name => 'test_user')
+  end
+end
+
+class RailsApplication < Rails::Application
+end if defined?(Rails)

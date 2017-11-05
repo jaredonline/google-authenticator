@@ -31,6 +31,7 @@ end
 
 @user = User.new
 @user.set_google_secret           # => true
+@user.google_secret_value         # => 16-character plain-text secret, whatever the name of the secret column
 @user.google_qr_uri               # => http://path.to.google/qr?with=params
 @user.google_authentic?(123456)   # => true
 ```
@@ -327,13 +328,12 @@ If you want to manually destroy the MFA cookie (for example, when a user logs ou
 UserMfaSession::destroy
 ```
 
-## Storing Secrets in Encrypted Form
+## Storing Secrets in Encrypted Form (Rails 4.1 and above)
 
 Normally, if an attacker gets access to the application database, they will be able to generate correct authentication codes,
 elmininating the security gains from two-factor authentication. If the application's ```secret_key_base``` is handled more securely
 than the database (by, for example, never putting it on the server filesystem), protection against database compromise can
-be gained by setting the ```:encrypt_secrets``` option to ```true```. Newly-created secrets will then be stored in encrypted
-form.
+be gained by setting the ```:encrypt_secrets``` option to ```true```. Newly-created secrets will then be stored in encrypted form.
 
 Existing non-encrypted secrets for all models for which the ```:encrypt_secrets``` option has been set to ```true```
 can be encrypted by running
@@ -353,6 +353,8 @@ Then run
 ```
 to change all encrypted google secret fields to use the new key.
 
+If the app is not running under Rails version 4.1 or above, encryption will be disabled, and a warning issued if ```:encrypt_secrets```
+is enabled on a model.
 
 ## Contributing
 

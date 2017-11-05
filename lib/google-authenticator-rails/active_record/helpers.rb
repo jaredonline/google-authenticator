@@ -1,14 +1,19 @@
 module GoogleAuthenticatorRails # :nodoc:
   mattr_accessor :secret_encryptor
+  
   module ActiveRecord  # :nodoc:
     module Helpers
+      
+      # Returns and memoizes the plain text google secret for this instance, irrespective of the
+      # name of the google secret storage column and whether secret encryption is enabled for this model.
+      #
       def google_secret_value
         if @google_secret_value_cached
           @google_secret_value
         else
           @google_secret_value_cached = true
           secret_in_db = google_secret_column_value
-          @google_secret_value = secret_in_db && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(secret_in_db) : secret_in_db
+          @google_secret_value = secret_in_db.present? && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(secret_in_db) : secret_in_db
         end
       end
       
@@ -55,7 +60,7 @@ module GoogleAuthenticatorRails # :nodoc:
 
       def change_google_secret_to!(secret, encrypt = self.class.google_secrets_encrypted)
         @google_secret_value = secret
-        self.__send__("#{self.class.google_secret_column}=", secret && encrypt ? google_secret_encryptor.encrypt_and_sign(secret) : secret)
+        self.__send__("#{self.class.google_secret_column}=", secret.present? && encrypt ? google_secret_encryptor.encrypt_and_sign(secret) : secret)
         @google_secret_value_cached = true
         save!
       end

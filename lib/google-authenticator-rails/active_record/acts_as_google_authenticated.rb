@@ -97,6 +97,17 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_issuer            = options[:issuer]
           @google_qr_size           = options[:qr_size]               || '200x200'
           @google_secrets_encrypted = !!options[:encrypt_secrets]
+          
+          if @google_secrets_encrypted && !@shown_encryption_warning && !GoogleAuthenticatorRails.encryption_supported?
+            msg = 'Google secret encryption is only supported on Ruby on Rails 4.1 and above. Encryption has been disabled.'
+            if defined?(Rails) && !Rails.env.test?
+              Rails.logger.warning msg
+            else
+              puts msg
+            end 
+            @shown_encryption_warning = true
+            @google_secrets_encrypted = false
+          end
 
           puts ":skip_attr_accessible is no longer required.  Called from #{Kernel.caller[0]}}" if options.has_key?(:skip_attr_accessible)
 
