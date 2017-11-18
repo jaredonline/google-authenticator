@@ -98,14 +98,13 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_qr_size           = options[:qr_size]               || '200x200'
           @google_secrets_encrypted = !!options[:encrypt_secrets]
           
-          if @google_secrets_encrypted && !@shown_encryption_warning && !GoogleAuthenticatorRails.encryption_supported?
-            msg = 'Google secret encryption is only supported on Ruby on Rails 4.1 and above. Encryption has been disabled.'
+          if @google_secrets_encrypted && !GoogleAuthenticatorRails.encryption_supported?
+            msg = "Google secret encryption is only supported on Ruby on Rails 4.1 and above. Encryption has been disabled for #{name}."
             if defined?(Rails) && !Rails.env.test?
               Rails.logger.warn msg
             else
               puts msg
             end 
-            @shown_encryption_warning = true
             @google_secrets_encrypted = false
           end
 
