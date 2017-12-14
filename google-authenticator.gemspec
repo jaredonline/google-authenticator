@@ -30,5 +30,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rake",      "~> 11.0"
   gem.add_development_dependency "rspec",     "~> 2.8.0"
   gem.add_development_dependency "appraisal", "~> 0.5.1"
+  gem.add_development_dependency "simplecov"
   gem.add_development_dependency "sqlite3"
 end
