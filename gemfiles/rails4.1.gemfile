@@ -4,5 +4,6 @@ source "https://rubygems.org"
 
 gem "activerecord", "~> 4.1.0"
 gem "protected_attributes"
+gem "json", "~> 1.8.3"
 
 gemspec :path=>"../"

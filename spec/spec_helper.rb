@@ -8,6 +8,9 @@ require 'rotp'
 require 'bundler'
 require 'bundler/setup'
 
+require 'simplecov'
+SimpleCov.start
+
 require 'google-authenticator-rails'
 
 class MockController

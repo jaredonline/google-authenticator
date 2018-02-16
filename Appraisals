@@ -24,6 +24,7 @@ end
 appraise "rails4.1" do
   gem "activerecord", "~> 4.1.0"
   gem "protected_attributes"
+  gem "json", "~> 1.8.3"
 end
 
 appraise "rails4.2" do
