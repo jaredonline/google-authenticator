@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "google-authenticator-rails"
   gem.require_paths = ["lib"]
-  gem.version       = Google::Authenticator::Rails::VERSION
+  gem.version       = GoogleAuthenticatorRails::VERSION
 
   gem.add_dependency "rotp", "= 1.6.1"
   gem.add_dependency "rails"
