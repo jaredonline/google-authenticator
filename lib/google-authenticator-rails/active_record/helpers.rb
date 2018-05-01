@@ -72,7 +72,8 @@ module GoogleAuthenticatorRails # :nodoc:
       end
 
       def google_issuer
-        self.class.google_issuer
+        issuer = self.class.google_issuer
+        issuer.is_a?(Proc) ? issuer.call(self) : issuer
       end
       
       def google_secret_encryptor

@@ -117,8 +117,15 @@ class DriftUser < BaseUser
   acts_as_google_authenticated :drift => 31
 end
 
-class ProcUser < BaseUser
+class ProcLabelUser < BaseUser
   acts_as_google_authenticated :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
+end
+
+class ProcIssuerUser < BaseUser
+  acts_as_google_authenticated :issuer => Proc.new { |user| user.admin? ? "FA Admin" :  "FutureAdvisor" }
+  def admin?
+    true
+  end
 end
 
 class SymbolUser < BaseUser
