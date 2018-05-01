@@ -237,8 +237,13 @@ describe GoogleAuthenticatorRails do
         end
   
         context 'custom proc' do
-          let(:user) { UserFactory.create ProcUser }
+          let(:user) { UserFactory.create ProcLabelUser }
           it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%40futureadvisor-admin%3Fsecret%3D#{secret}&chs=200x200" }
+        end
+        
+        context 'custom issuer' do
+          let(:user) { UserFactory.create ProcIssuerUser }
+          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fissuer%3DFA%2BAdmin%26secret%3D#{secret}&chs=200x200" }
         end
   
         context 'method defined by symbol' do

@@ -222,6 +222,14 @@ class User
 end
 ```
 
+You can also use a Proc to set a dynamic issuer for multi-tenant applications or any other custom needs:
+
+```ruby
+class User
+  acts_as_google_authenticated :issuer => Proc.new { |user| user.admin? ? "Example Admin" : "example.com" }
+end
+```
+
 This way your user will have the name of your site at the authenticator card besides the current token.
 
 Here's what the issuers look like in Google Authenticator for iPhone:
