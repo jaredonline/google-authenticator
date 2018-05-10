@@ -14,7 +14,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Add the ability to use the Google Authenticator with ActiveRecord.}
   gem.homepage      = "http://github.com/jaredonline/google-authenticator"
 
-  gem.files = Dir['lib/**/*.rb'] + Dir['lib/**/**/*.rb'] + Dir['bin/*']
+  gem.files = Dir['lib/**/*.{rb,rake}'] + Dir['bin/*']
   gem.files += Dir['[A-Z]*'] + Dir['spec/**/*.rb']
   gem.files.reject! { |fn| fn.include? "CVS" }
 
