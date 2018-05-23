@@ -14,14 +14,18 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Add the ability to use the Google Authenticator with ActiveRecord.}
   gem.homepage      = "http://github.com/jaredonline/google-authenticator"
 
-  gem.files         = `git ls-files`.split($\)
+  gem.files = Dir['lib/**/*.{rb,rake}'] + Dir['bin/*']
+  gem.files += Dir['[A-Z]*'] + Dir['spec/**/*.rb']
+  gem.files.reject! { |fn| fn.include? "CVS" }
+
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "google-authenticator-rails"
   gem.require_paths = ["lib"]
-  gem.version       = Google::Authenticator::Rails::VERSION
+  gem.version       = GoogleAuthenticatorRails::VERSION
 
   gem.add_dependency "rotp", "= 1.6.1"
+  gem.add_dependency "rails"
   gem.add_dependency "activerecord"
   gem.add_dependency "google-qr"
   gem.add_dependency "actionpack"
@@ -29,5 +33,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rake",      "~> 11.0"
   gem.add_development_dependency "rspec",     "~> 2.8.0"
   gem.add_development_dependency "appraisal", "~> 0.5.1"
+  gem.add_development_dependency "simplecov"
   gem.add_development_dependency "sqlite3"
 end

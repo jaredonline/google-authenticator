@@ -1,7 +1,3 @@
-module Google
-  module Authenticator
-    module Rails
-      VERSION = "1.2.1"
-    end
-  end
+module GoogleAuthenticatorRails
+  VERSION = "1.6.1"
 end

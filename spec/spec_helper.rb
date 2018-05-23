@@ -1,9 +1,15 @@
+ENV['RAILS_ENV'] = 'test'
+
 require 'time'
+require 'rails'
 require 'active_record'
 require 'action_controller'
 require 'rotp'
 require 'bundler'
 require 'bundler/setup'
+
+require 'simplecov'
+SimpleCov.start
 
 require 'google-authenticator-rails'
 
@@ -111,8 +117,15 @@ class DriftUser < BaseUser
   acts_as_google_authenticated :drift => 31
 end
 
-class ProcUser < BaseUser
+class ProcLabelUser < BaseUser
   acts_as_google_authenticated :method => Proc.new { |user| "#{user.user_name}@futureadvisor-admin" }
+end
+
+class ProcIssuerUser < BaseUser
+  acts_as_google_authenticated :issuer => Proc.new { |user| user.admin? ? "FA Admin" :  "FutureAdvisor" }
+  def admin?
+    true
+  end
 end
 
 class SymbolUser < BaseUser
@@ -128,3 +141,25 @@ class SaltUserMfaSession < GoogleAuthenticatorRails::Session::Base; end
 class SaltUser < BaseUser
   acts_as_google_authenticated :lookup_token => :salt
 end
+
+class QrCodeUser < BaseUser
+  acts_as_google_authenticated :qr_size => '300x300', :method => :email
+end
+
+class EncryptedUser < BaseUser
+  acts_as_google_authenticated :encrypt_secrets => true
+end
+
+class EncryptedCustomUser < BaseUser
+  self.table_name = 'custom_users'
+  acts_as_google_authenticated :encrypt_secrets => true, :google_secret_column => :mfa_secret
+end
+
+class UserFactory
+  def self.create(klass)
+    klass.create(:email => 'test@example.com', :user_name => 'test_user')
+  end
+end
+
+class RailsApplication < Rails::Application
+end if defined?(Rails)
