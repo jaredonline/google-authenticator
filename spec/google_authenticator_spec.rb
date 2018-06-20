@@ -6,12 +6,12 @@ describe GoogleAuthenticatorRails do
 
     context 'counter = 1' do
       let(:counter) { 1 }
-      it { should == 868864 }
+      it { should == "868864" }
     end
 
     context 'counter = 2' do
       let(:counter) { 2 }
-      it { should == 304404 }
+      it { should == "304404" }
     end
   end
 
@@ -19,7 +19,7 @@ describe GoogleAuthenticatorRails do
     let(:secret)         { '5qlcip7azyjuwm36' }
     let(:original_time)  { Time.parse("2012-08-07 11:11:00 AM +0700") }
     let!(:time)          { original_time }
-    let(:code)           { 495502 }
+    let(:code)           { "495502" }
 
     before do
       Time.stub!(:now).and_return(time)
@@ -243,7 +243,7 @@ describe GoogleAuthenticatorRails do
         
         context 'custom issuer' do
           let(:user) { UserFactory.create ProcIssuerUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fissuer%3DFA%2BAdmin%26secret%3D#{secret}&chs=200x200" }
+          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2FFA%2520Admin%3Atest%40example.com%3Fsecret%3D#{secret}%26issuer%3DFA%2BAdmin&chs=200x200" }
         end
   
         context 'method defined by symbol' do
