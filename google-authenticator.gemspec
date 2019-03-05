@@ -28,6 +28,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rails"
   gem.add_dependency "activerecord"
   gem.add_dependency "google-qr"
+  gem.add_dependency "rqrcode"
   gem.add_dependency "actionpack"
 
   gem.add_development_dependency "rake",      "~> 11.0"

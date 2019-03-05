@@ -272,6 +272,11 @@ describe GoogleAuthenticatorRails do
           subject { user.google_qr_uri('400x400') }
           it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%40example.com%3Fsecret%3D#{secret}&chs=400x400" }
         end
+
+        context 'generates base64 image' do
+          let(:user) { UserFactory.create QrCodeUser }
+          it { user.google_qr_to_base64.include?('data:image/png;base64').should be_true }
+        end
       end
     end
   end
