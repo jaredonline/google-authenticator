@@ -34,6 +34,6 @@ module GoogleAuthenticatorRails
   end
 end
 
-if defined?(ActionController::Base)
+ActiveSupport.on_load(:action_controller) do
   ActionController::Base.send(:include, GoogleAuthenticatorRails::ActionController::Integration)
 end
