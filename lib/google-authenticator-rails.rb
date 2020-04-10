@@ -54,11 +54,11 @@ module GoogleAuthenticatorRails
   end
 
   def self.valid?(code, secret, drift = DRIFT)
-    ROTP::TOTP.new(secret).verify_with_drift(code, drift)
+    ROTP::TOTP.new(secret).verify code, drift_ahead: drift, drift_behind: drift
   end
 
   def self.generate_secret
-    ROTP::Base32.random_base32
+    ROTP::Base32.random
   end
 
   def self.time_until_expiration
