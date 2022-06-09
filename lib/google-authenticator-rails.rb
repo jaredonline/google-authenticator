@@ -4,7 +4,6 @@ require 'active_support'
 require 'active_record'
 require 'openssl'
 require 'rotp'
-require 'google-qr'
 require 'rqrcode'
 
 # Stuff the gem is

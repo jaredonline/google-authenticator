@@ -27,7 +27,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rotp", ">= 5.0", "< 7.0"
   gem.add_dependency "rails"
   gem.add_dependency "activerecord"
-  gem.add_dependency "google-qr"
   gem.add_dependency "rqrcode"
   gem.add_dependency "actionpack"
 

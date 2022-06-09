@@ -1,9 +1,9 @@
 module GoogleAuthenticatorRails # :nodoc:
   mattr_accessor :secret_encryptor
-  
+
   module ActiveRecord  # :nodoc:
     module Helpers
-      
+
       # Returns and memoizes the plain text google secret for this instance, irrespective of the
       # name of the google secret storage column and whether secret encryption is enabled for this model.
       #
@@ -16,7 +16,7 @@ module GoogleAuthenticatorRails # :nodoc:
           @google_secret_value = secret_in_db.present? && self.class.google_secrets_encrypted ? google_secret_encryptor.decrypt_and_verify(secret_in_db) : secret_in_db
         end
       end
-      
+
       def set_google_secret
         change_google_secret_to!(GoogleAuthenticatorRails::generate_secret)
       end
@@ -32,7 +32,8 @@ module GoogleAuthenticatorRails # :nodoc:
       end
 
       def google_qr_uri(size = nil)
-        GoogleQR.new(:data => ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label), :size => size || self.class.google_qr_size).to_s
+        data = ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label)
+        "https://chart.googleapis.com/chart?cht=qr&chl=#{CGI.escape(data)}&chs=#{size || self.class.google_qr_size}"
       end
 
       def google_qr_to_base64(size = 200)
@@ -54,7 +55,7 @@ module GoogleAuthenticatorRails # :nodoc:
       def google_token_value
         self.__send__(self.class.google_lookup_token)
       end
-      
+
       def encrypt_google_secret!
         change_google_secret_to!(google_secret_column_value)
       end
@@ -63,7 +64,7 @@ module GoogleAuthenticatorRails # :nodoc:
       def default_google_label_method
         self.__send__(self.class.google_label_column)
       end
-      
+
       def google_secret_column_value
         self.__send__(self.class.google_secret_column)
       end
@@ -79,11 +80,11 @@ module GoogleAuthenticatorRails # :nodoc:
         issuer = self.class.google_issuer
         issuer.is_a?(Proc) ? issuer.call(self) : issuer
       end
-      
+
       def google_secret_encryptor
         GoogleAuthenticatorRails.secret_encryptor ||= GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
       end
-      
+
       def self.get_google_secret_encryptor
         ActiveSupport::MessageEncryptor.new(Rails.application.key_generator.generate_key('Google-secret encryption key', 32))
       end
