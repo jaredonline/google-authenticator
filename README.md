@@ -366,7 +366,7 @@ to change all encrypted google secret fields to use the new key.
 If the app is not running under Rails version 4.1 or above, encryption will be disabled, and a warning issued if ```:encrypt_secrets```
 is enabled on a model.
 
-If encryption is enabled for a model, the Google secret column of its table must be able to hold at least 138 characters, rather than just 16.
+If encryption is enabled for a model, the Google secret column of its table must be able to hold at least 162 characters, rather than just 32.
 
 ## Contributing
 
