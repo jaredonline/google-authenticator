@@ -22,7 +22,7 @@ jobs:
       - ruby/install-deps # use the ruby orb to install dependencies
       - run:
           name: Run all appraisal tests
-          command: rake appraisal spec
+          command: bundle exec rake appraisal spec
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
