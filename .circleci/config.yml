@@ -13,7 +13,7 @@ jobs:
       ruby_version:
         type: string
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'cimg/ruby<< parameters.ruby_version  >>'
     steps:
       - checkout
       - ruby/install:
