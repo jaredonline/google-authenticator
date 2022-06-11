@@ -12,12 +12,10 @@ jobs:
     parameters:
       ruby_version:
         type: string
-    machine: # executor type
-      image: ubuntu-2004:202010-01
+    docker:
+      - image: cimg/ruby:<< parameters.ruby_version >>
     steps:
       - checkout
-      - ruby/install:
-          version: << parameters.ruby_version >>
       - run:
           name: Which bundler?
           command: bundle -v
@@ -33,4 +31,4 @@ workflows:
       - test:
           matrix:
             parameters:
-              ruby_version: ["3.2", "3.1", "3.0", "2.7"]
+              ruby_version: ["3.1", "3.0", "2.7"]
