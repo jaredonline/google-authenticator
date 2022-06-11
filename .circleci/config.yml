@@ -29,7 +29,7 @@ jobs:
           command: bundle exec appraisal install
       - run:
           name: Run all appraisal tests
-          command: bundle exec appraisal spec
+          command: bundle exec rake appraisal spec
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
