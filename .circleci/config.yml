@@ -5,10 +5,6 @@ version: 2.1
 orbs: 
   ruby: circleci/ruby@1.8.0
 
-dependencies:
-  post:
-    - bundle exec appraisal install
-
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
@@ -20,6 +16,9 @@ jobs:
       - image: cimg/ruby:<< parameters.ruby_version >>
     steps:
       - checkout
+      - run:
+          name: Update ruby gems
+          command: gem update --system
       - run:
           name: Which bundler?
           command: bundle -v
