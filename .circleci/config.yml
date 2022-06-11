@@ -12,10 +12,12 @@ jobs:
     parameters:
       ruby_version:
         type: string
-    docker:
-      - image: 'cimg/ruby:<< parameters.ruby_version  >>'
+    machine: # executor type
+      image: ubuntu-2004:202010-01
     steps:
       - checkout
+      - ruby/install:
+          version: << parameters.ruby_version >>
       - run:
           name: Which bundler?
           command: bundle -v
