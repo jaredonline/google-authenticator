@@ -5,6 +5,16 @@ version: 2.1
 orbs: 
   ruby: circleci/ruby@1.8.0
 
+dependencies:
+  post:
+    - bundle exec appraisal install
+test:
+  pre:
+    - bundle exec appraisal rake db:create
+    - bundle exec appraisal rake db:migrate
+  override:
+    - bundle exec appraisal rspec
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
