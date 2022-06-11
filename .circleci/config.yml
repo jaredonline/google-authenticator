@@ -26,7 +26,7 @@ jobs:
       - ruby/install-deps # use the ruby orb to install dependencies
       - run:
           name: Install deps
-          command: bunld exec appraisal install
+          command: bundle exec appraisal install
       - run:
           name: Run all appraisal tests
           command: bundle exec appraisal spec
