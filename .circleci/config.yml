@@ -19,6 +19,7 @@ jobs:
       - run:
           name: Which bundler?
           command: bundle -v
+      - ruby/install-deps # use the ruby orb to install dependencies
       - run:
           name: Run all appraisal tests
           command: rake appraisal spec
