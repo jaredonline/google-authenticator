@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Update ruby gems
-          command: sudo gem update --system --no-ri --no-rdoc
+          command: sudo gem update --system --no-document
       - run:
           name: Which bundler?
           command: bundle -v
