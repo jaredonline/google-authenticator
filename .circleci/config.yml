@@ -13,11 +13,9 @@ jobs:
       ruby_version:
         type: string
     docker:
-      - image: 'cimg/ruby<< parameters.ruby_version  >>'
+      - image: 'cimg/ruby:<< parameters.ruby_version  >>'
     steps:
       - checkout
-      - ruby/install:
-          version: << parameters.ruby_version >>
       - run:
           name: Which bundler?
           command: bundle -v
