@@ -12,6 +12,8 @@ jobs:
     parameters:
       ruby_version:
         type: string
+      rails_version:
+        type: string
     docker:
       - image: cimg/ruby:<< parameters.ruby_version >>
     steps:
