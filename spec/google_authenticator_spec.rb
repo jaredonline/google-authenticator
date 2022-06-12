@@ -1,5 +1,7 @@
 require 'spec_helper'
 
+@@secret = '5qlcip7azyjuwm36'
+
 describe GoogleAuthenticatorRails do
   describe '#generate_password' do
     subject { GoogleAuthenticatorRails::generate_password("test", counter) }
@@ -16,14 +18,14 @@ describe GoogleAuthenticatorRails do
   end
 
   context 'time-based passwords' do
-    let(:secret)         { '5qlcip7azyjuwm36' }
+    let(:secret)         { @@secret }
     let(:original_time)  { Time.parse("2012-08-07 11:11:00 AM +0700") }
     let!(:time)          { original_time }
     let(:code)           { "495502" }
 
     before do
-      Time.stub!(:now).and_return(time)
-      ROTP::Base32.stub!(:random_base32).and_return(secret)
+      allow(Time).to receive(:now).and_return(time)
+      allow(ROTP::Base32).to receive(:random_base32).and_return(secret)
     end
 
     specify { GoogleAuthenticatorRails::time_based_password(secret).should == code }
@@ -105,7 +107,7 @@ describe GoogleAuthenticatorRails do
         end        
         
         it 'validates code' do
-          @user.google_authentic?(code).should be_true
+          @user.google_authentic?(code).should be_truthy
         end
 
         it_behaves_like 'handles nil secrets'
@@ -118,7 +120,7 @@ describe GoogleAuthenticatorRails do
         end
   
         it 'validates code' do
-          @user.google_authentic?(code).should be_true
+          @user.google_authentic?(code).should be_truthy
         end
   
         it 'generates a url for a qr code' do
@@ -141,7 +143,7 @@ describe GoogleAuthenticatorRails do
         end        
         
         it 'validates code' do
-          @user.google_authentic?(code).should be_true
+          @user.google_authentic?(code).should be_truthy
         end
       end
       
@@ -157,7 +159,7 @@ describe GoogleAuthenticatorRails do
             @encrypted_user = UserFactory.create EncryptedCustomUser
             @encrypted_user.set_google_secret
             @non_encrypted_user = UserFactory.create EncryptedCustomUser
-            @non_encrypted_user.update_attribute(:mfa_secret, secret)
+            @non_encrypted_user.update_attribute(:mfa_secret, @@secret)
             Rake.application.invoke_task("google_authenticator:#{type}_secrets[User,EncryptedCustomUser]")
           end  
             
@@ -275,7 +277,7 @@ describe GoogleAuthenticatorRails do
 
         context 'generates base64 image' do
           let(:user) { UserFactory.create QrCodeUser }
-          it { user.google_qr_to_base64.include?('data:image/png;base64').should be_true }
+          it { user.google_qr_to_base64.include?('data:image/png;base64').should be_truthy }
         end
       end
     end

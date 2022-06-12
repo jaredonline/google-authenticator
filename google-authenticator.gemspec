@@ -32,7 +32,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "actionpack"
 
   gem.add_development_dependency "rake",      "~> 13.0"
-  gem.add_development_dependency "rspec",     "~> 2.8.0"
+  gem.add_development_dependency "rspec",     "~> 3.4.0"
   gem.add_development_dependency "appraisal", "~> 2.4.1"
   gem.add_development_dependency "simplecov"
   gem.add_development_dependency "sqlite3",   "~> 1.3.6"

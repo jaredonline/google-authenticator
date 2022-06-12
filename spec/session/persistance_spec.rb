@@ -20,7 +20,9 @@ describe GoogleAuthenticatorRails::Session::Base do
         after   { clear_cookie unless user.nil? }
 
         it            { should be_a UserMfaSession }
-        its(:record)  { should eq user }
+        it "can fetch the record" do
+          expect(subject.record).to eq(user)
+        end
 
         context 'custom lookup token' do
           let(:user) { SaltUser.create(:password => "password", :email => "email@example.com") }
@@ -28,7 +30,9 @@ describe GoogleAuthenticatorRails::Session::Base do
           subject { SaltUserMfaSession.find }
 
           it           { should be_a SaltUserMfaSession }
-          its(:record) { should eq user }
+          it "can fetch the record" do
+            expect(subject.record).to eq(user)
+          end
         end
 
         context 'after destroy' do
@@ -46,7 +50,9 @@ describe GoogleAuthenticatorRails::Session::Base do
       subject { UserMfaSession.create(user) }
 
       it            { should be_a UserMfaSession }
-      its(:record)  { should eq user }
+      it "can fetch the record" do
+        expect(subject.record).to eq(user)
+      end
 
       context 'nil user' do
         let(:user)  { nil }
