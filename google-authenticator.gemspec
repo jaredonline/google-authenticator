@@ -31,7 +31,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rqrcode"
   gem.add_dependency "actionpack"
 
-  gem.add_development_dependency "rake",      "~> 11.0"
+  gem.add_development_dependency "rake",      "~> 13.0"
   gem.add_development_dependency "rspec",     "~> 2.8.0"
   gem.add_development_dependency "appraisal", "~> 2.4.1"
   gem.add_development_dependency "simplecov"
