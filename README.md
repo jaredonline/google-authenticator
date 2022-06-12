@@ -1,7 +1,6 @@
 # GoogleAuthenticatorRails
 
 [![Gem Version](https://badge.fury.io/rb/google-authenticator-rails.png)](http://badge.fury.io/rb/google-authenticator-rails)
-[![Build Status](https://secure.travis-ci.org/jaredonline/google-authenticator.png)](http://travis-ci.org/jaredonline/google-authenticator)
 [![Code Climate](https://codeclimate.com/github/jaredonline/google-authenticator.png)](https://codeclimate.com/github/jaredonline/google-authenticator)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/41e825da75bd7630262f/test_coverage)](https://codeclimate.com/github/jaredonline/google-authenticator/test_coverage)
 
