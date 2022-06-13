@@ -1,10 +1,12 @@
 require 'spec_helper'
 
-@@secret = 'LMFMFDV3UGN7LBO4FEMVQVJOK7F7FLLE'
-
 describe GoogleAuthenticatorRails do
+  def get_secret
+    'LMFMFDV3UGN7LBO4FEMVQVJOK7F7FLLE'
+  end
+
   describe '#generate_password' do
-    subject { GoogleAuthenticatorRails::generate_password(@@secret, counter) }
+    subject { GoogleAuthenticatorRails::generate_password(get_secret, counter) }
 
     context 'counter = 1' do
       let(:counter) { 1 }
@@ -18,7 +20,7 @@ describe GoogleAuthenticatorRails do
   end
 
   context 'time-based passwords' do
-    let(:secret)         { @@secret }
+    let(:secret)         { get_secret }
     let(:original_time)  { Time.parse("2012-08-07 11:11:00 AM +0700") }
     let!(:time)          { original_time }
     let(:code)           { "954578" }
@@ -159,7 +161,7 @@ describe GoogleAuthenticatorRails do
             @encrypted_user = UserFactory.create EncryptedCustomUser
             @encrypted_user.set_google_secret
             @non_encrypted_user = UserFactory.create EncryptedCustomUser
-            @non_encrypted_user.update_attribute(:mfa_secret, @@secret)
+            @non_encrypted_user.update_attribute(:mfa_secret, get_secret)
             Rake.application.invoke_task("google_authenticator:#{type}_secrets[User,EncryptedCustomUser]")
           end
 
