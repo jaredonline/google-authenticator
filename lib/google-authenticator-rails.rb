@@ -4,7 +4,6 @@ require 'active_support'
 require 'active_record'
 require 'openssl'
 require 'rotp'
-require 'google-qr'
 require 'rqrcode'
 
 # Stuff the gem is
@@ -27,13 +26,13 @@ module GoogleAuthenticatorRails
   def self.encryption_supported?
     defined?(Rails) && (Rails::VERSION::MAJOR > 4 || Rails::VERSION::MAJOR == 4 && Rails::VERSION::MINOR > 0)
   end
-  
+
   class Railtie < Rails::Railtie
     rake_tasks do
       load 'tasks/google_authenticator.rake'
     end
-  end if encryption_supported? && !Rails.env.test? # Without this last condition tasks under test are run twice 
-    
+  end if encryption_supported? && !Rails.env.test? # Without this last condition tasks under test are run twice
+
   # Drift is set to 6 because ROTP drift is not inclusive. This allows a drift of 5 seconds.
   DRIFT = 6
 
@@ -45,7 +44,7 @@ module GoogleAuthenticatorRails
 
   # Additional configuration passed to a Session::Persistence cookie.
   @@cookie_options = { :httponly => true }
-  
+
   def self.generate_password(secret, iteration)
     ROTP::HOTP.new(secret).at(iteration)
   end
@@ -55,11 +54,11 @@ module GoogleAuthenticatorRails
   end
 
   def self.valid?(code, secret, drift = DRIFT)
-    ROTP::TOTP.new(secret).verify_with_drift(code, drift)
+    !!ROTP::TOTP.new(secret).verify(code, drift_ahead: drift, drift_behind: drift)
   end
 
   def self.generate_secret
-    ROTP::Base32.random_base32
+    ROTP::Base32.random
   end
 
   def self.time_until_expiration

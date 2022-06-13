@@ -24,10 +24,9 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = GoogleAuthenticatorRails::VERSION
 
-  gem.add_dependency "rotp", "= 3.3.0"
+  gem.add_dependency "rotp", ">= 5.0", "< 7.0"
   gem.add_dependency "rails"
   gem.add_dependency "activerecord"
-  gem.add_dependency "google-qr"
   gem.add_dependency "rqrcode"
   gem.add_dependency "actionpack"
 
@@ -35,5 +34,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rspec",     "~> 3.4.0"
   gem.add_development_dependency "appraisal", "~> 2.4.1"
   gem.add_development_dependency "simplecov"
-  gem.add_development_dependency "sqlite3",   "~> 1.3.6"
+  gem.add_development_dependency "sqlite3",   "~> 1.4.0"
 end

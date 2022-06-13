@@ -7,9 +7,9 @@ namespace :google_authenticator do
                     # Adapted from https://stackoverflow.com/a/8248849/7478194
                     Dir[Rails.root.join('app/models/*.rb').to_s].map { |filename| File.basename(filename, '.rb').camelize }
                   end
-    
+
     ActiveRecord::Base.transaction do
-      match_op = " = #{already_encrypted ? 138 : 16}"
+      match_op = already_encrypted ? " in (138,162)" : "in (16,32)"
       model_names.each do |model_name|
         klass = model_name.constantize
         next unless klass.ancestors.include?(ActiveRecord::Base) && klass.try(:google_secrets_encrypted)
@@ -23,7 +23,7 @@ namespace :google_authenticator do
       end
     end
   end
-  
+
   desc 'Encrypt all secret columns (add the :encrypt_secrets options *before* running)'
   task :encrypt_secrets, [:optional_model_list] => :environment do |_t, args|
     do_encrypt(args, false, 'Encrypt') { |record| record.encrypt_google_secret! }
@@ -46,10 +46,10 @@ namespace :google_authenticator do
       end
     end
   end
-  
+
   desc 'Decrypt all secret columns (remove the :encrypt_secrets options *after* running)'
   task :decrypt_secrets, [:optional_model_list] => :environment do |_t, args|
     do_encrypt(args, true, 'Decrypt') { |record| record.send(:change_google_secret_to!, record.google_secret_value, false) }
-  end  
+  end
 
 end
