@@ -27,7 +27,7 @@ jobs:
       - run:
           name: Which bundler?
           command: bundle -v
-      - ruby/install-deps # use the ruby orb to install dependencies
+      - ruby/install-deps: # use the ruby orb to install dependencies
           with-cache: false
       - run:
           name: Install deps
