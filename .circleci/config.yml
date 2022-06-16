@@ -33,6 +33,9 @@ jobs:
           name: Which bundler?
           command: bundle -v
       - run:
+          name: Which bundler?
+          command: /home/circleci/.rubygems/bin/bundle -v
+      - run:
           name: Install deps
           command: bundle exec appraisal install
       - run:
