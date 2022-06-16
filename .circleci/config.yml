@@ -19,9 +19,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Update ruby gems
-          command: sudo gem update --system --no-document
-      - run:
           name: Which bundler?
           command: which bundle
       - run:
