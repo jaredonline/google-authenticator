@@ -24,18 +24,10 @@ jobs:
       - run:
           name: Which bundler?
           command: bundle -v
-      - ruby/install-deps: # use the ruby orb to install dependencies
-          bundler-version: 2.0.2
-          with-cache: false
-      - run:
-          name: Which bundler?
-          command: which bundle
-      - run:
-          name: Which bundler?
-          command: bundle -v
-      - run:
-          name: Which bundler?
-          command: /home/circleci/.rubygems/bin/bundle -v
+      - ruby/install-deps # use the ruby orb to install dependencies
+        #- ruby/install-deps: # use the ruby orb to install dependencies
+        #    bundler-version: 2.0.2
+        #    with-cache: false
       - run:
           name: Install deps
           command: bundle exec appraisal install
