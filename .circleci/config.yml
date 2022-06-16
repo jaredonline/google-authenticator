@@ -29,6 +29,7 @@ jobs:
           command: bundle -v
       - ruby/install-deps: # use the ruby orb to install dependencies
           with-cache: false
+          bundler-version: 2.0.2
       - run:
           name: Install deps
           command: bundle exec appraisal install
