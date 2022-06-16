@@ -20,11 +20,15 @@ jobs:
       - checkout
       - run:
           name: Update ruby gems
-          command: gem update --system --no-document
+          command: sudo gem update --system --no-document
+      - run:
+          name: Which bundler?
+          command: which bundle
       - run:
           name: Which bundler?
           command: bundle -v
       - ruby/install-deps # use the ruby orb to install dependencies
+          with-cache: false
       - run:
           name: Install deps
           command: bundle exec appraisal install
