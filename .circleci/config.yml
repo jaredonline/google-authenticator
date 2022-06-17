@@ -18,17 +18,11 @@ jobs:
       - image: cimg/ruby:<< parameters.ruby >>
     steps:
       - checkout
-      - run:
-          name: Which bundler?
-          command: which bundle
-      - run:
-          name: Which bundler?
-          command: bundle -v
       - ruby/install-deps: # use the ruby orb to install dependencies
           bundler-version: 2.0.2
-          with-cache: false
+            #    with-cache: false
       - run:
-          name: Install deps
+          name: Install appraisal deps
           command: bundle exec appraisal install
       - run:
           name: Run all appraisal tests
