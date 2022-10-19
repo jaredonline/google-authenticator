@@ -32,7 +32,7 @@ module GoogleAuthenticatorRails
       end
 
       def destroy
-        controller.cookies.delete cookie_key
+        controller.cookies.delete(cookie_key, domain: :all)
       end
 
       private
