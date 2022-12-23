@@ -3,9 +3,9 @@ require 'spec_helper'
 describe GoogleAuthenticatorRails::ActionController::Integration do
   describe '::included' do
     context 'ApplicationController already defined' do
-      before  { class ApplicationController < MockController; end }
-      after   { Object.send(:remove_const, :ApplicationController) }
-      subject { lambda { MockController.send(:include, GoogleAuthenticatorRails::ActionController::Integration) } }
+      # Autoload ApplicationController.
+      before  { ApplicationController }
+      subject { lambda { MockControllerWithApplicationController.send(:include, GoogleAuthenticatorRails::ActionController::Integration) } }
 
       it { should raise_error(GoogleAuthenticatorRails::ActionController::RailsAdapter::LoadedTooLateError) }
     end

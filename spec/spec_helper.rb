@@ -13,8 +13,18 @@ SimpleCov.start
 
 require 'google-authenticator-rails'
 
-class MockController
-  class << self
+module MockControllerBase
+  def self.included(klass)
+    klass.class_eval do
+      extend ClassMethods
+
+      include GoogleAuthenticatorRails::ActionController::Integration
+
+      attr_accessor :cookies
+    end
+  end
+
+  module ClassMethods
     attr_accessor :callbacks
 
     def prepend_before_filter(filter)
@@ -23,14 +33,21 @@ class MockController
     end
   end
 
-  include GoogleAuthenticatorRails::ActionController::Integration
-
-  attr_accessor :cookies
-
   def initialize
     @cookies = MockCookieJar.new
   end
 end
+
+class MockController
+  include MockControllerBase
+end
+
+class MockControllerWithApplicationController
+  include MockControllerBase
+end
+
+# Simulate Rails' autoloading for ApplicationController.
+autoload :ApplicationController, File.join(File.dirname(__FILE__), 'support/application_controller')
 
 class MockCookieJar < Hash
   def [](key)
