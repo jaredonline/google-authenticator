@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    google-authenticator-rails (3.0.0)
+    google-authenticator-rails (3.1.0)
       actionpack
       activerecord
       rails
@@ -100,8 +100,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.0)
-    minitest (5.15.0)
+    minitest (5.16.0)
     net-imap (0.2.3)
       digest
       net-protocol
@@ -117,8 +116,7 @@ GEM
       net-protocol
       timeout
     nio4r (2.5.8)
-    nokogiri (1.13.10)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.13.10-arm64-darwin)
       racc (~> 1.4)
     racc (1.6.1)
     rack (2.2.3.1)
@@ -184,7 +182,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.5.4)
+    zeitwerk (2.6.0)
 
 PLATFORMS
   ruby
