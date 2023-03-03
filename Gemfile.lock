@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    google-authenticator-rails (3.2.0)
+    google-authenticator-rails (3.2.1)
       actionpack
       activerecord
       rails
@@ -103,7 +103,6 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.8.1)
     minitest (5.17.0)
     net-imap (0.3.4)
       date
@@ -115,8 +114,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.14.2)
-      mini_portile2 (~> 2.8.0)
+    nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
     racc (1.6.2)
     rack (2.2.6.2)
