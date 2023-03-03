@@ -116,6 +116,8 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.14.2-x86_64-linux)
+      racc (~> 1.4)
     racc (1.6.2)
     rack (2.2.6.3)
     rack-test (2.0.2)
@@ -183,6 +185,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   appraisal (~> 2.4.1)
