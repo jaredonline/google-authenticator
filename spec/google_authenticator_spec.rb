@@ -80,6 +80,12 @@ describe GoogleAuthenticatorRails do
         end
       end
 
+      context 'integer code validation' do
+        subject { user.google_authentic?(code.to_i) }
+
+        it { should be true }
+      end
+
       it 'creates a secret' do
         user.set_google_secret
         user.google_secret.should == secret
@@ -89,6 +95,12 @@ describe GoogleAuthenticatorRails do
         it 'clears a secret' do
           @user.clear_google_secret!
           @user.google_secret_value.should(be_nil) && @user.reload.google_secret_value.should(be_nil)
+        end
+
+        it 'raises exception when checking authenticity' do
+          @user.clear_google_secret!
+
+          expect { @user.google_authentic?(code) }.to raise_error(ArgumentError)
         end
       end
 
