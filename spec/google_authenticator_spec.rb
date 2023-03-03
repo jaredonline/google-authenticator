@@ -80,6 +80,12 @@ describe GoogleAuthenticatorRails do
         end
       end
 
+      context 'integer code validation' do
+        subject { user.google_authentic?(code.to_i) }
+
+        it { should be true }
+      end
+
       it 'creates a secret' do
         user.set_google_secret
         user.google_secret.should == secret
