@@ -28,6 +28,8 @@ module GoogleAuthenticatorRails # :nodoc:
       end
 
       def google_authentic?(code)
+        raise ArgumentError, "Can't authenticate before google secret is set!" unless google_secret_value.present?
+
         GoogleAuthenticatorRails.valid?(code, google_secret_value, self.class.google_drift)
       end
 

@@ -91,10 +91,10 @@ describe GoogleAuthenticatorRails do
           @user.google_secret_value.should(be_nil) && @user.reload.google_secret_value.should(be_nil)
         end
 
-        it 'is not authentic' do
+        it 'raises exception when checking authenticity' do
           @user.clear_google_secret!
 
-          @user.google_authentic?(code).should be_falsey
+          expect { @user.google_authentic?(code) }.to raise_error(ArgumentError)
         end
       end
 
