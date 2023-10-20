@@ -137,7 +137,7 @@ For example:
 ```ruby
 # app/models/user.rb
 class User < ActiveRecord::Base
-  acts_as_google_authentic
+  acts_as_google_authenticated
 end
 
 # app/models/user_mfa_session.rb
@@ -162,7 +162,7 @@ For example:
 ```ruby
 # app/models/user.rb
 class User < ActiveRecord::Base
-  acts_as_google_authentic
+  acts_as_google_authenticated
 end
 
 # Model has attributes:
@@ -187,7 +187,7 @@ The above example will fail because the `User` class doesn't have a `persistence
 ```ruby
 # app/models/user.rb
 class User < ActiveRecord::Base
-  acts_as_google_authentic :lookup_token => :salt
+  acts_as_google_authenticated :lookup_token => :salt
 end
 
 # Model has attributes:
