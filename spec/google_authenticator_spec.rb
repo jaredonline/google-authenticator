@@ -138,7 +138,7 @@ describe GoogleAuthenticatorRails do
         end
 
         it 'generates a url for a qr code' do
-          @user.google_qr_uri.should == "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200"
+          @user.google_qr_uri.should == "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200"
         end
       end
 
@@ -245,48 +245,48 @@ describe GoogleAuthenticatorRails do
         before      { user.set_google_secret }
         subject     { user.google_qr_uri }
 
-        it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200" }
+        it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200" }
 
         context 'custom column name' do
           let(:user) { UserFactory.create ColumnNameUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%3Fsecret%3D#{secret}&chs=200x200" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%3Fsecret%3D#{secret}&chs=200x200" }
         end
 
         context 'custom proc' do
           let(:user) { UserFactory.create ProcLabelUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%2540futureadvisor-admin%3Fsecret%3D#{secret}&chs=200x200" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest_user%2540futureadvisor-admin%3Fsecret%3D#{secret}&chs=200x200" }
         end
 
         context 'custom issuer' do
           let(:user) { UserFactory.create ProcIssuerUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2FFA%2520Admin%3Atest%2540example.com%3Fsecret%3D#{secret}%26issuer%3DFA%2520Admin&chs=200x200" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2FFA%2520Admin%3Atest%2540example.com%3Fsecret%3D#{secret}%26issuer%3DFA%2520Admin&chs=200x200" }
         end
 
         context 'method defined by symbol' do
           let(:user) { UserFactory.create SymbolUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200" }
         end
 
         context 'method defined by string' do
           let(:user) { UserFactory.create StringUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=200x200" }
         end
 
         context 'custom qr size' do
           let(:user) { UserFactory.create QrCodeUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=300x300" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=300x300" }
         end
 
         context 'qr size passed to method' do
           subject { user.google_qr_uri('400x400') }
           let(:user) { UserFactory.create StringUser }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=400x400" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=400x400" }
         end
 
         context 'qr size passed to method and size set on model' do
           let(:user) { UserFactory.create QrCodeUser }
           subject { user.google_qr_uri('400x400') }
-          it { should eq "https://chart.googleapis.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=400x400" }
+          it { should eq "https://image-charts.com/chart?cht=qr&chl=otpauth%3A%2F%2Ftotp%2Ftest%2540example.com%3Fsecret%3D#{secret}&chs=400x400" }
         end
 
         context 'generates base64 image' do

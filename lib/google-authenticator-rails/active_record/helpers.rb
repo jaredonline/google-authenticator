@@ -35,7 +35,7 @@ module GoogleAuthenticatorRails # :nodoc:
 
       def google_qr_uri(size = nil)
         data = ROTP::TOTP.new(google_secret_value, :issuer => google_issuer).provisioning_uri(google_label)
-        "https://chart.googleapis.com/chart?cht=qr&chl=#{CGI.escape(data)}&chs=#{size || self.class.google_qr_size}"
+        "https://image-charts.com/chart?cht=qr&chl=#{CGI.escape(data)}&chs=#{size || self.class.google_qr_size}"
       end
 
       def google_qr_to_base64(size = 200)
