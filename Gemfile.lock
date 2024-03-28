@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    google-authenticator-rails (3.4.1)
+    google-authenticator-rails (3.4.2)
       actionpack
       activerecord
       rails
@@ -129,9 +129,9 @@ GEM
       net-protocol
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.4.0.1)
+    net-smtp (0.5.0)
       net-protocol
-    nio4r (2.7.0)
+    nio4r (2.7.1)
     nokogiri (1.16.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -142,7 +142,7 @@ GEM
     psych (5.1.2)
       stringio
     racc (1.7.3)
-    rack (3.0.9.1)
+    rack (3.0.10)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
@@ -182,7 +182,7 @@ GEM
     rake (13.1.0)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
-    reline (0.4.3)
+    reline (0.5.0)
       io-console (~> 0.5)
     rotp (6.3.0)
     rqrcode (2.2.0)
