@@ -209,19 +209,27 @@ describe GoogleAuthenticatorRails do
 
           context 'reencrypt_secrets task' do
             before(:all) do
-              def reset_encryption(secret_key_base)
-                Rails.application.secrets[:secret_key_base] = secret_key_base
-                Rails.application.instance_eval { @caching_key_generator = nil }
-                GoogleAuthenticatorRails.secret_encryptor = nil
-              end
-
-              current_secret_key_base = Rails.application.secrets[:secret_key_base]
-              reset_encryption(Rails.application.secrets.old_secret_key_base)
+              ENV['OLD_SECRET_KEY_BASE'] = 'c9e4baab86ab1d7373eafd7fbc467b227d44e23608834ea5bdfc502bd33211d205f245a06ced789af579e8d77aa4c1bfd605065190ee24d3709ada92366cadfb'
+              GoogleAuthenticatorRails.secret_encryptor =
+                GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor(ENV['OLD_SECRET_KEY_BASE'])
               set_and_run_task('reencrypt')
-              reset_encryption(current_secret_key_base)
+            end
+
+            after(:all) do
+              ENV.delete('OLD_SECRET_KEY_BASE')
+              GoogleAuthenticatorRails.secret_encryptor = nil
             end
 
             it_behaves_like 'task tests', 'reencrypt'
+
+            it 'moves encrypted secrets from the old key to the current key' do
+              helpers = GoogleAuthenticatorRails::ActiveRecord::Helpers
+              stored = @encrypted_user.reload.send(:google_secret_column_value)
+
+              expect { helpers.get_google_secret_encryptor.decrypt_and_verify(stored) }.not_to raise_error
+              expect { helpers.get_google_secret_encryptor(ENV['OLD_SECRET_KEY_BASE']).decrypt_and_verify(stored) }
+                .to raise_error(ActiveSupport::MessageEncryptor::InvalidMessage)
+            end
           end
         end
       end

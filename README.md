@@ -357,7 +357,7 @@ This may be reversed by running
 ```
 then by removing, or setting ```false```, the ```:encrypt_secrets``` option.
 
-If ```secret_key_base``` needs to change, set ```old_secret_key_base``` to the old key in ```config/secrets.yml``` before generating the new key.
+If ```secret_key_base``` needs to change, set ```old_secret_key_base``` to the old key in your Rails credentials, or set the ```OLD_SECRET_KEY_BASE``` environment variable, before generating the new key.
 Then run
 ```bash
   rails google_authenticator:reencrypt_secrets

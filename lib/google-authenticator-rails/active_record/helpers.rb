@@ -87,8 +87,9 @@ module GoogleAuthenticatorRails # :nodoc:
         GoogleAuthenticatorRails.secret_encryptor ||= GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
       end
 
-      def self.get_google_secret_encryptor
-        encryption_key = Rails.application.key_generator.generate_key('Google-secret encryption key', 32)
+      def self.get_google_secret_encryptor(secret_key_base = nil)
+        key_generator = secret_key_base ? Rails.application.key_generator(secret_key_base) : Rails.application.key_generator
+        encryption_key = key_generator.generate_key('Google-secret encryption key', 32)
         encryptor = ActiveSupport::MessageEncryptor.new(encryption_key)
         encryptor.rotate(encryption_key, cipher: 'aes-256-cbc') # Legacy support for Rails 5.2
         encryptor

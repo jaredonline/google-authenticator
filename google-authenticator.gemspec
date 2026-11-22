@@ -25,14 +25,14 @@ Gem::Specification.new do |gem|
   gem.version       = GoogleAuthenticatorRails::VERSION
 
   gem.add_dependency "rotp", ">= 5.0", "< 7.0"
-  gem.add_dependency "rails"
+  gem.add_dependency "railties"
   gem.add_dependency "activerecord"
   gem.add_dependency "rqrcode"
   gem.add_dependency "actionpack"
 
   gem.add_development_dependency "rake",      "~> 13.0"
-  gem.add_development_dependency "rspec",     "~> 3.4.0"
+  gem.add_development_dependency "rspec",     "~> 3.13"
   gem.add_development_dependency "appraisal", "~> 2.5.0"
   gem.add_development_dependency "simplecov"
-  gem.add_development_dependency "sqlite3",   "~> 1.7"
+  gem.add_development_dependency "sqlite3",   "~> 2.1"
 end
