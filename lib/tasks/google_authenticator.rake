@@ -31,13 +31,12 @@ namespace :google_authenticator do
 
   desc 'Re-encrypt all secret columns from old_secret_key_base to secret_key_base'
   task :reencrypt_secrets, [:optional_model_list] => :environment do |_t, args|
-    if Rails.application.secrets.old_secret_key_base.blank?
-      puts 'old_secret_key_base is not set in config/secrets.yml'
+    old_secret_key_base = Rails.application.credentials.old_secret_key_base || ENV['OLD_SECRET_KEY_BASE']
+    if old_secret_key_base.blank?
+      puts 'old_secret_key_base is not set in credentials or OLD_SECRET_KEY_BASE'
     else
       secret_encryptor = GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
-      Rails.application.secrets[:secret_key_base] = Rails.application.secrets.old_secret_key_base
-      Rails.application.instance_eval { @caching_key_generator = nil }
-      old_secret_encryptor = GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor
+      old_secret_encryptor = GoogleAuthenticatorRails::ActiveRecord::Helpers.get_google_secret_encryptor(old_secret_key_base)
       do_encrypt(args, true, 'Re-encrypt') do |record|
         GoogleAuthenticatorRails.secret_encryptor = old_secret_encryptor
         plain_secret = record.google_secret_value
